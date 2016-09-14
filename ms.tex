@@ -123,7 +123,23 @@ BATMAN \citep{Kreidberg2015a}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{img/b53.pdf}
+\includegraphics[width=\columnwidth]{img/zhang_quad.pdf}
+\caption{This is a caption}
+\label{fig:zhang_quad}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/zhang_quad_bright.pdf}
+\caption{Same as \ref{fig:zhang_quad}, but the scale is now flux instead of temperature. A blackbody spectrum and a channel of 1.1-1.7 microns was assumed to make the conversion. The option exists to add limb darkening to this profile.}
+\label{fig:zhang_quad2}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/zhang_lc.pdf}
 \caption{This is a caption}
 \label{fig:extract_region}
 \end{center}
@@ -131,7 +147,41 @@ BATMAN \citep{Kreidberg2015a}
 
 \subsection{Fitting procedure}\label{sec:fitting}
 
+\subsection{Integrator validation}\label{sec:numerical}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/precision.pdf}
+\caption{This is a caption}
+\label{fig:extract_region}
+\end{center}
+\end{figure}
+
+\subsection{Performance}\label{sec:performance}
+
+In typical usage, SPIDERMAN is capable of producing over 1000 models per second on a single core. This means that a 1 million MCMC sample can be generated in approximately a quarter of an hour.
+
+The performance tests were carried out on a single core of an Intel Core I5-3470 Processor.
+
+\subsection{Performance}\label{sec:performance}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/exec_time.pdf}
+\caption{This is a caption}
+\label{fig:exec_time}
+\end{center}
+\end{figure}
+
 \section{Results}\label{sec:results}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/system.pdf}
+\caption{This is a caption}
+\label{fig:extract_region}
+\end{center}
+\end{figure}
 
 \subsection{transmission spectra}
 
