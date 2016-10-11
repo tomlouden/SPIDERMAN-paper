@@ -20,5 +20,10 @@
 \bibitem[\protect\citeauthoryear{Kreidberg}{Kreidberg}{2015}]{Kreidberg2015a}
 Kreidberg L.,  2015, \mn@doi [PASP] {10.1086/683602}, 127, 1161
 
+\bibitem[\protect\citeauthoryear{Stevenson et~al.,}{Stevenson
+  et~al.}{2014}]{Stevenson2014c}
+Stevenson K.~B.,  et~al., 2014, \mn@doi [Science] {10.1126/science.1256758},
+  346, 838
+
 \makeatother
 \end{thebibliography}

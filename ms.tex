@@ -196,7 +196,24 @@ BATMAN \citep{Kreidberg2015a}
 \end{center}
 \end{figure*}
 
-\subsection{Fitting procedure}\label{sec:fitting}
+\subsection{Model design}\label{sec:fitting}
+
+The model is designed so that an arbitrary brightness distribution can be used, and that the resulting phase curve and secondary eclipse lightcurves can be calculated rapidly and accurately. 
+
+The visible disc of the planet is divided into a series of annuli, and then these in turn are separated in theta. The number of segments in each annuli are chosen so that the area of every sector is the same. This results in 1 circular segment in the center, then 3 regions in the second annuli See the schematic in figure \ref{fig:schematic}. The planet is defined to have a radius of 1. Other grid schemes could be implemented in future versions, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
+
+
+In practice, it is found that dividing the planet into 5 radially (25 total sectors) gives results within a few percent of higher density grids, and is significantly faster.
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\columnwidth]{img/frame1.pdf}
+\caption{Schematic representation of the planet grid. All sectors are equal area.}
+\label{fig:schematic}
+\end{center}
+\end{figure}
+
 
 \subsection{Integrator validation}\label{sec:numerical}
 
@@ -252,9 +269,83 @@ Full installation instructions and other information are available in the docume
 
 As a test of the performance of the code the model was applied to a phase curve and secondary eclipse of WASP-43b taken with HST WFC3. These data had previously been published in \citet{Stevenson2014c}. However, in this paper the phase curve and the secondary eclipse are treated as seperate phenomena, when of course, they are both manifestations of the same underlying brightness distribution. Indeed, the bright dayside of the planet is the main driver of the phase curve, and is also the part occulted by the stellar disc. It is therefore more parsimonious, if at all possible, to use a model that accounts for both of these observations simultaneously. This also reduces the total number of paramters needed, which is satisfying from an information content angle.
 
-One could argue that planetary limb darkening, among other effects, will act to decouple the secondary eclipse from the phase curve, and there are not good constraints on what to expect from the limb darkening as it requires a full atmosphere model treatment. However, one would expect that the. \textsc{spiderman} does have the option to include planetary limb darkening, which would allow one to marginalise over the uncertainty in these parameters.
+One could argue that planetary limb darkening, among other effects, will act to decouple the secondary eclipse from the phase curve, and there are not good constraints on what to expect from the limb darkening as it requires a full atmosphere model treatment. \textsc{spiderman} does have the option to include planetary limb darkening, which would allow one to marginalise over the uncertainty in these parameters. 
 
-In princple, constraints being placed on the limb darkening can constrain the vertical temperature profile of the planet.
+In principle, constraints being placed on the limb darkening can constrain the vertical temperature profile of the planet, however this would require a full radiative transfer treatment of the planet.
+
+WASP-43b appears to have a near isothermal profile \citep{Stevenson2014c}, which should correspon
+
+\section{Systematics model}\label{sec:systematics}
+
+The data are effectedThe systematics model is the same that was used in the previous treatment \citep{Stevenson2014c}.
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{img/systematics.pdf}
+\caption{Top: raw data from HST, the systematic components are all visible. second panel shows the physical model fit (red) and the systematic model (blue). The third panel shows the model fit to the data with the systematic noise component removed, the fourth panel is the residuals of the fit.
+}
+\label{fig:systematics}
+\end{center}
+\end{figure*}
+
+\section{MCMC}\label{sec:MCMC}
+
+To investigate the correlation between the
+
+In table \ref{tab:results}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/new_lc.pdf}
+\caption{The final fitted lightcurve. The primary transit is fit by \textsc{batman} and is off the scale of this figure.}
+\label{fig:extract_region}
+\end{center}
+\end{figure}
+
+\begin{center}
+\begin{table*}{
+\caption{This is my caption}
+\begin{center}
+\begin{tabular}{l c c c c c}
+\hline
+\hline
+          &   ld fixed   &             &   ld free    &             \\
+name      &   median     & error       &   median     & error        & unit        \\
+\hline
+Period &  0.813473977 & $\pm$ 0.000000036 &  0.813473979 & $\pm$ 0.000000034 & days\\
+$t0$ & 2456601.0274024 & $\pm$   0.0000091 & 2456601.0274025 & $\pm$   0.0000091 & days\\
+$a/R_*$ &       4.8762 & $\pm$      0.0089 &       4.8772 & $\pm$      0.0087 & -\\
+inclination &       82.123 & $\pm$       0.038 &       82.125 & $\pm$       0.037 & degrees\\
+eccentricity & 0 & - & 0 & - & -\\
+$R_p/R_*$ &     0.159692 & $\pm$    0.000093 &     0.159650 & $\pm$    0.000092 & -\\
+$u1$ &       0.3880 & $\pm$      0.0083 &       0.3875 & $\pm$      0.0082 & -\\
+$u2$ & 0 & - & 0 & - & -\\
+$c_1$ & 3.687319e+08 & $\pm$    0.000090e+08 & 3.687526e+08 & $\pm$    0.000089e+08 & -\\
+$c_2$ & 3.693661e+08 & $\pm$    0.000097e+08 & 3.693654e+08 & $\pm$    0.000097e+08 & -\\
+$c_3$ & 3.689717e+08 & $\pm$    0.000093e+08 &  3.68984e+08 & $\pm$     0.00010e+08 & -\\
+$v1_1$ &   -1.484e+06 & $\pm$       0.045e+06 &   -1.559e+06 & $\pm$       0.049e+06 & -\\
+$v1_2$ &    -6.31e+05 & $\pm$        0.50e+05 &    -6.19e+05 & $\pm$        0.55e+05 & -\\
+$v1_3$ &    -8.56e+05 & $\pm$        0.49e+05 &    -8.57e+05 & $\pm$        0.54e+05 & -\\
+$v2_1$ &    1.004e+06 & $\pm$       0.059e+06 &    1.076e+06 & $\pm$       0.064e+06 & -\\
+$v2_2$ &     1.83e+05 & $\pm$        0.61e+05 &     1.92e+05 & $\pm$        0.67e+05 & -\\
+$v2_3$ &     4.08e+05 & $\pm$        0.62e+05 &     3.77e+05 & $\pm$        0.67e+05 & -\\
+$r1$ &        123.2 & $\pm$         3.5 &        122.7 & $\pm$         3.5 & -\\
+$r2$ &        5.874 & $\pm$       0.011 &        5.877 & $\pm$       0.011 & -\\
+$r3$ &       -0.087 & $\pm$       0.028 &       -0.113 & $\pm$       0.028 & -\\
+scale &   -0.0024748 & $\pm$   0.0000061 &   -0.0024749 & $\pm$   0.0000060 & -\\
+$p_{u1}$ & 0 & - &         -1.2 & $\pm$         0.9 & -\\
+$p_{u2}$ & 0 & - &         -2.7 & $\pm$         1.1 & -\\
+$a$ &      0.01421 & $\pm$     0.00040 &      0.01419 & $\pm$     0.00040 & AU\\
+$\xi$ &        0.436 & $\pm$       0.050 &        0.417 & $\pm$       0.053 & -\\
+$T_n$ &         1290 & $\pm$          39 &         1069 & $\pm$          62 & K\\
+$\Delta_T$ &          699 & $\pm$          53 &          827 & $\pm$          92 & K\\
+$T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\\
+\end{tabular}
+\end{center}
+\label{tab:results}
+}
+\end{table*}
+\end{center}
 
 \section{Discussion}\label{sec:Discussion}
 
