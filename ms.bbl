@@ -20,10 +20,25 @@
 \bibitem[\protect\citeauthoryear{Kreidberg}{Kreidberg}{2015}]{Kreidberg2015a}
 Kreidberg L.,  2015, \mn@doi [PASP] {10.1086/683602}, 127, 1161
 
+\bibitem[\protect\citeauthoryear{Showman, Fortney, Lian, Marley, Freedman,
+  Knutson  \& Charbonneau}{Showman et~al.}{2008}]{Showman2008}
+Showman A.~P.,  Fortney J.~J.,  Lian Y.,  Marley M.~S.,  Freedman R.~S.,
+  Knutson H.~a.,   Charbonneau D.,  2008, \mn@doi [ApJ]
+  {10.1088/0004-637X/699/1/564}, p.~20
+
 \bibitem[\protect\citeauthoryear{Stevenson et~al.,}{Stevenson
   et~al.}{2014}]{Stevenson2014c}
 Stevenson K.~B.,  et~al., 2014, \mn@doi [Science] {10.1126/science.1256758},
   346, 838
+
+\bibitem[\protect\citeauthoryear{Wakeford, Sing, Evans, Deming  \&
+  Mandell}{Wakeford et~al.}{2016}]{Wakeford2016}
+Wakeford H.~R.,  Sing D.~K.,  Evans T.,  Deming D.,   Mandell A.,  2016,
+  \mn@doi [ApJ] {10.3847/0004-637X/819/1/10}, 819, 10
+
+\bibitem[\protect\citeauthoryear{Zhang \& Showman}{Zhang \&
+  Showman}{2016}]{Zhang2016}
+Zhang X.,  Showman A.~P.,  2016, arXiv [astro-ph.EP]
 
 \makeatother
 \end{thebibliography}

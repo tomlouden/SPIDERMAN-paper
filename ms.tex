@@ -125,7 +125,22 @@ planets and satellites: individual (WASP 52b)---stars: individual (WASP 52)---te
 
 \section{Introduction}\label{sec:introduction}
 
+Secondary eclipses and phase curves can give direct insight into the thermal transport processes, and vertical structure of an exoplanet atmosphere.
+
+Hot Jupiters are expected to be tidally locked to their parent stars, resulting in a permanent day and night side with enormous differences in incident flux. The details of the heat transport in the atmosphere will effect how efficiently energy can be transported between the two hemispheres of the planet.
+
+General Circulation Models, GCM's, are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.]{Showman2008}
+
+An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots.
+
+An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be offset from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity (CITE?). 
+
+
+\citet{Zhang2016} showed that this behaviour could be captured with a simple analytical formalism.
+
 BATMAN \citep{Kreidberg2015a}
+
+There does not currently exist an open source code for calculating secondary eclipses and phase curves in a self consistent way, \textsc{spiderman} is designed to fulfil this role, and it is is hoped that it will be of use to the community.
 
 \section{Method}\label{sec:method}
 
@@ -203,8 +218,19 @@ The model is designed so that an arbitrary brightness distribution can be used, 
 The visible disc of the planet is divided into a series of annuli, and then these in turn are separated in theta. The number of segments in each annuli are chosen so that the area of every sector is the same. This results in 1 circular segment in the center, then 3 regions in the second annuli See the schematic in figure \ref{fig:schematic}. The planet is defined to have a radius of 1. Other grid schemes could be implemented in future versions, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
 
 
-In practice, it is found that dividing the planet into 5 radially (25 total sectors) gives results within a few percent of higher density grids, and is significantly faster.
+In practice, it is found that dividing the planet into 5 radially (25 total sectors) gives results within a few percent of higher density grids, and is significantly faster to run.
 
+Each of the grid segments is a well defined geometric shape for which it is simple to calculate the fraction blocked by the planet passing behind the star, which in the model is represented as an occulting circle.
+
+The area of one of these geometrical segments that has been blocked by the star can always be calculated by breaking the area into a combination of circle segments and triangles, for which the areas are known.
+
+There are a small number of different general "cases" for the numbers of triangles and segments that must be used, that can be selected based on the number and types of "collision points" between the planet region and the stellar circle. Therefore, the first step for calculating the occulted area for each segment of the planet is to calculate these collision points. Within \textsc{spiderman} the region boandaries are stored as the radius of the inner and outer arcs, and the $\theta$ angle of the two radial lines.
+
+Finding the collision points between an arc or a line and a circle (the star), if any exist, are trivial and fast to calculate. The code then classifies the geometric "case" of the collision based on the number of collision points on the 4 boundary sides.
+
+For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles.
+
+The advantage of this geometric approach is that the planet can be described by a small number of regions with no loss in numerical precision, enabling eclipses and phase curves to be calculated extremely rapidly.
 
 \begin{figure}
 \begin{center}
@@ -213,7 +239,6 @@ In practice, it is found that dividing the planet into 5 radially (25 total sect
 \label{fig:schematic}
 \end{center}
 \end{figure}
-
 
 \subsection{Integrator validation}\label{sec:numerical}
 
@@ -238,6 +263,19 @@ The performance tests were carried out on a single core of an Intel Core I5-3470
 \label{fig:exec_time}
 \end{center}
 \end{figure}
+
+\subsection{Available models}\label{sec:ttof}
+
+
+\subsection{Temperature to fluxes}\label{sec:ttof}
+
+Some physical models, such as the one adapted from \citep{zhang2016} are defined in terms of temperature, where of course the observable that is being fit for is the emitted flux. Therefore, it is necessary
+
+If we make the assumption that the temperature distribution maps to the \emph{brightness temperature} distribution, then we can recover these fluxes. This will be valid for narrow
+
+An additional factor that is not currently considered by the model but will be featured in future releases of the code is to also include the ability for the user to define instrument response functions as a function of wavelength.
+
+\subsection{}\label{sec:ttof}
 
 \section{The \textsc{spiderman} package}\label{sec:package}
 
@@ -273,11 +311,57 @@ One could argue that planetary limb darkening, among other effects, will act to 
 
 In principle, constraints being placed on the limb darkening can constrain the vertical temperature profile of the planet, however this would require a full radiative transfer treatment of the planet.
 
-WASP-43b appears to have a near isothermal profile \citep{Stevenson2014c}, which should correspon
+WASP-43b appears to have a near isothermal profile \citep{Stevenson2014c}, which should correspond to a zero limb darkening. However, as I show in section X. there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
+
+During the MCMC fit I place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/ld_prof.pdf}
+\caption{The 1 sigma and 3 sigma contours for the Radial intensity profile of the planet, indicating that the fit has a significant preference for limb brightened profiles }
+\label{fig:limb brighten}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/model.pdf}
+\caption{the uncertainty on the model from the MCMC fit. There is a greater than 3 sigma detection of night-side flux.}
+\label{fig:model}
+\end{center}
+\end{figure}
 
 \section{Systematics model}\label{sec:systematics}
 
-The data are effectedThe systematics model is the same that was used in the previous treatment \citep{Stevenson2014c}.
+As with most exoplanet observations with Hubble, the data are effected by the idiosyncratic systematic errors of the instrument. Fortunately, the sources of these errors are relatively well understood, and are generally quite repeatable between observations. They are therefore quite straightforward to fit for and remove. 
+
+The systematics model is the same that was used in the previous treatment \citep{Stevenson2014c}.
+
+In brief, there are three components to the systematics model:
+
+1. Scan direction offset
+
+There is an offset in the recorded flux depending on which way the the ccd was scanning during the readout, in one half of exposures the scan direction is in the same direction as the readout, and in the other half it is the offset. This leads to a very repeatable offset in the fluxes between the two scan directions, which can be captured with a single parameter "scale"
+
+2. Orbit long "hook effect"
+
+\begin{equation} \label{eq:hook}
+F_{cor} = F*(1-exp(-r1 t_{orb}-r2-r3 \delta_{fo}))
+\end{equation}
+
+Where $F$ is the flux before correction and $F_{cor}$ is the corrected flux $t_{orb}$ is the time from the start of each \emph{obit}, $r1$, $r2$, $r3$ are the fitted coefficients. This exponential ramp has a different shape during the first orbit of a visit, so the $\delta_{fo}$ function takes a value of 1 if the orbit is the first, and 0 at all other times.
+
+The exponential hook shape is believed to be related to charge trapping, and is a characteristic and repeatable feature across orbits, so these parameters are fit simultaneously over visits.
+
+3. A visit long slope. 
+
+Each visit displays a decreasing slope, which is modelled as a second order polynomial. The cause of these features is unknown, and they have not been linked to any physical parameters of the telescope \cite{Wakeford2016}. Here, they are also likely blended with the "Breathing" systematics of the instrument, which are caused by the changing thermal environment of the telescope during its orbit changing the focal length of the instrument. The shape of these visit long effects is slightly different between the three visits used here, so the three paramters of the polynomial are fit seperately for the three visits.
+
+The feature that is the greatest cause for concern is the visit long slope in the data, as this has a comparable timescale and amplitude to the planets phase curve, so there is potential for serious degeneracies between the systematics and the physical model.
+
+Fortunately, the phasing of the observations is such that the three visits cover very different ranges of the phase curve, which does tend to alleviate the degeneracy. As can be seen in the large corner plot in figure \ref{}, these parameters are still degenerate with the physical model parameters, in particular the $\xi$ paramter which controls the phase curve shape, but the constraints placed on these parameters are still useful, and marginalising over the systematics parameters with the MCMC should remove any doubt that the results are only an artefact.
+
+Future analysis of this dataset could use a Gaussian process noise model instead of the parametrised one featured here, as used in (REF), this could provide further confidence in the results, as the added flexibility of the GP model and the explicit fit for the timescale of the features would allow the degeneracy to be explored with fewer explicit hyper-parameters.
 
 \begin{figure*}
 \begin{center}
@@ -293,6 +377,14 @@ The data are effectedThe systematics model is the same that was used in the prev
 To investigate the correlation between the
 
 In table \ref{tab:results}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\textwidth]{img/huge_triangle.pdf}
+\caption{stupidly big triangle plot1}
+\label{fig:extract_region}
+\end{center}
+\end{figure*}
 
 \begin{figure}
 \begin{center}
@@ -353,8 +445,16 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 
 \textsc{spiderman} is still under development, and there are a number of features that are planned to be implemented:
 
-- More brightness distributions, such as orange segments
-- Better treatment of errors in the 
+- More thermal brightness distributions, such as orange segments and a simple parameterised hotspot (etc?)
+- Implement \emph{reflected} light phase curves and secondary eclipses, through adding appropriate brightness distributions like Lambertian reflectors and patchy clouds.
+- Allow calculation of multiple spectral channels simultaneously, with linked system parameters.
+- Include instrument response in calculating flux ratios
+- Better treatment of errors in the spectral energy distribution of the star - include errors in log-g and Metalicity
+
+In regards to the re-analysis of WASP-43bs phase curve, future analysis will focus on
+
+- Confirming the detected flux on the nightside is a real feature and not an artefact
+- Further test for degeneracies between HST systematics and the physical model of the phase curve, in particular the combination of visit long slope and breathing modes. This could be accomplished by a Gaussian process analysis.
 
 \section{Conclusions}
 
