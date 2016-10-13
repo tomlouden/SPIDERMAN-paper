@@ -17,8 +17,37 @@
   {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
   mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
+\bibitem[\protect\citeauthoryear{Cowan, Agol  \& Charbonneau}{Cowan
+  et~al.}{2007}]{Cowan2007}
+Cowan N.~B.,  Agol E.,   Charbonneau D.,  2007, \mn@doi [MNRAS]
+  {10.1111/j.1365-2966.2007.11897.x}, 379, 641
+
+\bibitem[\protect\citeauthoryear{Deming, Seager  \& Richardson}{Deming
+  et~al.}{2005}]{Deming2005}
+Deming D.,  Seager S.,   Richardson L.~J.,  2005, \mn@doi [Nature]
+  {10.1038/nature03473.1.}, 434, 740
+
+\bibitem[\protect\citeauthoryear{Harrington, Hansen, Luszcz, Seager, Deming,
+  Menou, Cho  \& Richardson}{Harrington et~al.}{2006}]{Harrington2006}
+Harrington J.,  Hansen B.~M.,  Luszcz S.~H.,  Seager S.,  Deming D.,  Menou K.,
+   Cho J. Y.-K.,   Richardson L.~J.,  2006, \mn@doi [Science]
+  {10.1126/science.1133904}, 314, 623
+
+\bibitem[\protect\citeauthoryear{Knutson et~al.,}{Knutson
+  et~al.}{2007}]{Knutson2007b}
+Knutson H.~A.,  et~al., 2007, \mn@doi [Nature] {10.1038/nature05782}, 447, 183
+
 \bibitem[\protect\citeauthoryear{Kreidberg}{Kreidberg}{2015}]{Kreidberg2015a}
 Kreidberg L.,  2015, \mn@doi [PASP] {10.1086/683602}, 127, 1161
+
+\bibitem[\protect\citeauthoryear{Louden \& Wheatley}{Louden \&
+  Wheatley}{2015}]{Louden2015}
+Louden T.,  Wheatley P.~J.,  2015, \mn@doi [ApJ] {10.1088/2041-8205/814/2/L24},
+  814, L24
+
+\bibitem[\protect\citeauthoryear{Majeau, Agol  \& Cowan}{Majeau
+  et~al.}{2012}]{Majeau2012}
+Majeau C.,  Agol E.,   Cowan N.,  2012, ] {10.1088/2041-8205/747/2/L20}
 
 \bibitem[\protect\citeauthoryear{Showman, Fortney, Lian, Marley, Freedman,
   Knutson  \& Charbonneau}{Showman et~al.}{2008}]{Showman2008}
@@ -26,8 +55,23 @@ Showman A.~P.,  Fortney J.~J.,  Lian Y.,  Marley M.~S.,  Freedman R.~S.,
   Knutson H.~a.,   Charbonneau D.,  2008, \mn@doi [ApJ]
   {10.1088/0004-637X/699/1/564}, p.~20
 
+\bibitem[\protect\citeauthoryear{Showman, Fortney, Lewis  \& Shabram}{Showman
+  et~al.}{2013}]{Showman2013}
+Showman A.~P.,  Fortney J.~J.,  Lewis N.~K.,   Shabram M.,  2013, \mn@doi [ApJ]
+  {10.1088/0004-637X/762/1/24}, 762, 24
+
+\bibitem[\protect\citeauthoryear{Showman, Lewis  \& Fortney}{Showman
+  et~al.}{2015}]{Showman2015}
+Showman A.~P.,  Lewis N.~K.,   Fortney J.~J.,  2015, \mn@doi [ApJ]
+  {10.1088/0004-637X/801/2/95}, 801, 95
+
+\bibitem[\protect\citeauthoryear{Snellen, de Kok, de Mooij  \&
+  Albrecht}{Snellen et~al.}{2010}]{Snellen2010}
+Snellen I. a.~G.,  de Kok R.~J.,  de Mooij E. J.~W.,   Albrecht S.,  2010,
+  \mn@doi [Nature] {10.1038/nature09111}, 465, 1049
+
 \bibitem[\protect\citeauthoryear{Stevenson et~al.,}{Stevenson
-  et~al.}{2014}]{Stevenson2014c}
+  et~al.}{2014}]{Stevenson2014}
 Stevenson K.~B.,  et~al., 2014, \mn@doi [Science] {10.1126/science.1256758},
   346, 838
 
@@ -35,6 +79,11 @@ Stevenson K.~B.,  et~al., 2014, \mn@doi [Science] {10.1126/science.1256758},
   Mandell}{Wakeford et~al.}{2016}]{Wakeford2016}
 Wakeford H.~R.,  Sing D.~K.,  Evans T.,  Deming D.,   Mandell A.,  2016,
   \mn@doi [ApJ] {10.3847/0004-637X/819/1/10}, 819, 10
+
+\bibitem[\protect\citeauthoryear{Zellem et~al.,}{Zellem
+  et~al.}{2014}]{zellem2014}
+Zellem R.~T.,  et~al., 2014, \mn@doi [ApJ] {10.1088/0004-637X/790/1/53}, 790,
+  53
 
 \bibitem[\protect\citeauthoryear{Zhang \& Showman}{Zhang \&
   Showman}{2016}]{Zhang2016}
