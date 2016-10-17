@@ -310,13 +310,24 @@ Or, to access the bleeding-edge development version from github:
 Full installation instructions and other information are available in the documentation, at \url{http://spiderman.readthedocs.io}
 
 
+\textsc{spiderman} comes prepackaged with several plotting scripts to make visualisation of the model simple.
+
 typing the command
 
 \begin{Verbatim}[frame=single]
-> spider_params.plot\_system()
+> spider_params.plot_planet()
 \end{Verbatim}
 
-will generate a plot like figure \ref{fig:plot_system}
+Will display the planet from the perspective of the observer on Earth at the desired phase or Julian date.
+
+
+typing the command
+
+\begin{Verbatim}[frame=single]
+> spider_params.plot_system()
+\end{Verbatim}
+
+will generate a plot like figure \ref{fig:plot_system}, which is a scale diagram of the system. The desired phase or julian date can be given as an argument. These plots can be very useful for visualising the physical impacts of
 
 \begin{figure}
 \begin{center}
