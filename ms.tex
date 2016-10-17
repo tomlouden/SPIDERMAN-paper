@@ -107,7 +107,9 @@ $^{2}$Department of Astronomy, Harvard, America, America, America}
 
 Presenting \textsc{spiderman}, a fast code for calculating exoplanet phase curves and secondary eclipses with arbitrary surface brightness distributions.
 
-\textsc{spiderman}
+Using a geometrical algorithm, the code solves exactly the area of sections of the disc of the planet that are occulted by the star. The code is written in C and optimised to run extremely quickly, with no loss in precision. Approximately 1000 models can be generated per second with typical parameters.
+
+Using an analytical approximation to the results of General Circulation Models, we apply the code to archival data on the phase curve of WASP-43b, providing an excellent fit to the data, and placing constraints of the physics of the atmosphere, such as the ratio between advective and radiative timescales.
 
 The development version of the code is available at \url{https://github.com/tomlouden/spiderman}.
 
