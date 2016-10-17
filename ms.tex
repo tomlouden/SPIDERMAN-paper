@@ -225,7 +225,7 @@ There does not currently exist an open source code for calculating secondary ecl
 \end{center}
 \end{figure*}
 
-\subsection{Model design}\label{sec:fitting}
+\subsection{integrator design}\label{sec:integrator}
 
 The model is designed so that an arbitrary brightness distribution can be used, and that the resulting phase curve and secondary eclipse lightcurves can be calculated rapidly and accurately. 
 
@@ -263,6 +263,10 @@ The advantage of this geometric approach is that the planet can be described by 
 \label{fig:precision}
 \end{center}
 \end{figure}
+
+\subsection{Flux conversions}\label{sec:flux conversions}
+
+\subsection{Stellar models}\label{sec:stellar models}
 
 \subsection{Performance}\label{sec:performance}
 
@@ -309,7 +313,6 @@ Or, to access the bleeding-edge development version from github:
 
 Full installation instructions and other information are available in the documentation, at \url{http://spiderman.readthedocs.io}
 
-
 \textsc{spiderman} comes prepackaged with several plotting scripts to make visualisation of the model simple.
 
 typing the command
@@ -318,7 +321,7 @@ typing the command
 > spider_params.plot_planet()
 \end{Verbatim}
 
-Will display the planet from the perspective of the observer on Earth at the desired phase or Julian date.
+Will display the planet from the perspective of the observer on Earth at the desired phase or Julian date. If the chosen model uses a temperature distribution, then these plots can be made for both the temperature and the calculated flux distribution.
 
 
 typing the command
