@@ -237,11 +237,15 @@ An additional factor that is not currently considered by the model but will be f
 
 Since the shape and depth of an eclipse and phase curve are determined by the \emph{ratio} of the fluxes between the two bodies, lightcurves can comfortably be fit by very unphysical planet and star fluxes, so long as the ratio between them is of the right order, and there will clearly be an enormous degeneracy between the planet and star brightness.
 
-In order to recover any useful physical parameters of the planet, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system.
+In order to recover any useful physical parameters of the planet, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system. Somewhat counter-intuitively, these constraints only need to be \emph{as a function of surface area}, i.e., on the specific intensity of the system components, not on their total luminosity.
+
+To see that this is indeed the case, consider a case where the radii of both the planet and the star have both been underestimated by a factor of 2, such that the total luminosity will have been underestimated by a factor of 4. If the planetary and stellar specific flux distributions remains the same, The secondary eclipse depth and phase curve amplitude both scale as $(R_p / R_*)^2$, so are unchanged.
+
+$(R_p / R_*)^2$ is of course constrained well by the primary transit.
 
 Both planets and stars, of course, do not act exactly like ideal black-body radiators. For the planet the brightness temperature, or the temperature of a perfect blackbody emitting the same amount of flux within a bandpass, is a widely used convention, and is the direct observable.
 
-For the star however, we can do better than this. From high resolution spectroscopy and stellar modelling, there are often good constraints on the effective temperature and surface gravity of the star, and therefore the stellar type.
+For the star however, we can do better than this. From high resolution spectroscopy and stellar modelling, there are often good constraints on the effective temperature and surface gravity of the star
 
 \textsc{spiderman} models the absolute luminosity of the star.
 
