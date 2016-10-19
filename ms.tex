@@ -204,18 +204,11 @@ A lightcurve is calculated for each of these cases, and then the difference is t
 
 \subsection{The temperature model}\label{sec:temp model}
 
-While \textsc{spiderman} has several different ways to model the 
+\textsc{spiderman} has several different ways to model the brightness distribution, including a simple uniform distribution, and a non-informative model based on spherical harmonics (displayed visually in figure \ref{fig:harmonics}). However, the most interesting application is the physical model developed by \citet{Zhang2016}. This model was developed as part of a simple analytical framework to describe the broad trends within complex GCM's, and does a remarkably good job of replicating the temperature distributions of GCM's with only three free parameters. These parameters are physical in nature, the Temperature of the nightside of the planet, $T_n$, the difference in Temperature between the day and night side, $\Delta T$, and the ratio between the advective and radiative timescales in the atmosphere, $\xi$.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/both_lc.pdf}
-\includegraphics[width=\columnwidth]{img/both_lc_zoom.pdf}
-\caption{A close up of the secondary eclipse in figure \ref{fig:ex_lcs}. Note the different shape of the ingress and egress, caused by the asymmetry in the flux distribution on the planet.}
-\label{fig:ex_lcs}
-\end{center}
-\end{figure}
+\textsc{spiderman} projects this temperature map onto the visible sphere of the planet, meaning it is used directly to calculate the secondary eclipse and phase curve. This is the first time a physical model of atmosphere circulation has been used to directly fit to data.
 
-Spherical projection:
+The $\xi$ parameter is perhaps the most interesting, as it effectively parameterises the degree to which the hotspot of the planet will be offset from the substellar point by the circulation of the plant's atmosphere. The effects of this can be seen in \ref{fig:ex_lcs}, where
 
 \begin{figure}
 \begin{center}
@@ -225,29 +218,52 @@ Spherical projection:
 \end{center}
 \end{figure}
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/both_lc.pdf}
+\includegraphics[width=\columnwidth]{img/both_lc_zoom.pdf}
+\caption{The phase curve and secondary eclipses of an example planet generated with a simple spherical harmonics flux model (blue dashed) and the \citet{Zhang2016} physical model (red dot). Note in the physical model how the brightest point of the phase curve is significantly offset from the time of secondary transit, and the slightly different shape of the ingress and egress, both caused by the asymmetry in the flux distribution on the planet.}
+\label{fig:ex_lcs}
+\end{center}
+\end{figure}
+
 \subsection{Temperature to fluxes}\label{sec:ttof}
 
-Some physical models, such as the one adapted from \citep{Zhang2016} are defined in terms of temperature, where of course the observable that is being fit for is the emitted flux. Therefore, it is necessary
+Some physical models, such as the one adapted from \citep{Zhang2016} are defined in terms of temperature, where of course the observable that is being fit for is the emitted flux. Therefore, it is necessary to convert from one to the other.
 
 If we make the assumption that the temperature distribution maps to the \emph{brightness temperature} distribution, then we can recover these fluxes. This will be valid for band passes that are narrower than potentially strong molecular bands in the spectrum, such as water or carbon monoxide, but this assumption may introduce systematic errors into very wide band-passes.
+
+We treat the planet as a ideal blackbody, which is clearly a simplification. For the planet the brightness temperature, or the temperature of a perfect blackbody emitting the same amount of flux within a bandpass, is a widely used convention, and is the direct observable.
+
+The total flux emitted by a blackbody has a trivial solution, however, \textsc{spiderman} is intended to model the observations of real instuments, which will of course only sample a very small sample of the electromagnetic spectrum. There is not an analytical expression for the total amount of flux emitted by a blackbody within an arbitrary wavelength band.
 
 An additional factor that is not currently considered by the model but will be featured in future releases of the code is to also include the ability for the user to define instrument response functions as a function of wavelength.
 
 \subsection{Stellar model}\label{sec:stellar model}
 
-Since the shape and depth of an eclipse and phase curve are determined by the \emph{ratio} of the fluxes between the two bodies, lightcurves can comfortably be fit by very unphysical planet and star fluxes, so long as the ratio between them is of the right order, and there will clearly be an enormous degeneracy between the planet and star brightness.
+Since the shape and depth of an eclipse and phase curve are determined by the \emph{ratio} of the fluxes between the two bodies, lightcurves can comfortably be fit by very unphysical planet and star fluxes, so long as the ratio between them is of the right order. There will clearly be an enormous degeneracy between the planet and star brightness.
 
-In order to recover any useful physical parameters of the planet, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system. Somewhat counter-intuitively, these constraints only need to be \emph{as a function of surface area}, i.e., on the specific intensity of the system components, not on their total luminosity.
+In order to recover any useful physical parameters of the planet, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system. Somewhat counter-intuitively, these constraints only need to be on flux \emph{as a function of surface area}, i.e., on the specific intensity of the system components, and on their radius ratio, not on their total luminosity or radii.
 
-To see that this is indeed the case, consider a case where the radii of both the planet and the star have both been underestimated by a factor of 2, such that the total luminosity will have been underestimated by a factor of 4. If the planetary and stellar specific flux distributions remains the same, The secondary eclipse depth and phase curve amplitude both scale as $(R_p / R_*)^2$, so are unchanged.
+To see that this is indeed the case, consider a situation where the radii of both the planet and the star have both been underestimated by a factor of 2, but their surface intensities are unchanged, such that the total luminosity will have been underestimated by a factor of 4. The secondary eclipse depth and phase curve amplitude both scale as $(R_p / R_*)^2$, so are unchanged. $(R_p / R_*)^2$ is of course constrained well by the primary transit. The surface brightness distribution as a function of longitude and latitude can therefore be recovered without any constraint on the absolute radii or luminosity of the components.
 
-$(R_p / R_*)^2$ is of course constrained well by the primary transit.
+For the star however, we can do better than this. From high resolution spectroscopy and stellar modelling, there are often good constraints on the effective temperature and surface gravity of the star, which allow the observed stellar spectrum to be matched to a model spectra with physical units. This fixes the flux scale of the system, allowing useful constraints to be placed on the absolute flux level of the planet by extension.
 
-Both planets and stars, of course, do not act exactly like ideal black-body radiators. For the planet the brightness temperature, or the temperature of a perfect blackbody emitting the same amount of flux within a bandpass, is a widely used convention, and is the direct observable.
+\textsc{spiderman} models the stellar spectrum using a grid of PHOENIX stellar atmospheres calculated by \citet{Husser2013}. Using the user provided wavelength bandpass, \textsc{spiderman} calculates the total flux in this bandpass for the available models as a function of effective temperature, it then interpolates using a simple spline fit to calculate the flux for the effective temperature of the star. Internally, this is multiplied by the stellar radius to get an absolute flux level for the system.
 
-For the star however, we can do better than this. From high resolution spectroscopy and stellar modelling, there are often good constraints on the effective temperature and surface gravity of the star
+At present \textsc{spiderman} only interpolates in temperature, and picks the closest surface gravity and metalicity in the table, which will lead to small errors in the fluxes. Future versions of the code will interpolate in these values as well, allowing an MCMC to better model the uncertainty on the stellar surface brightness.
 
-\textsc{spiderman} models the absolute luminosity of the star.
+\subsection{Lightcurve calculation}\label{sec:lightcurve}
+
+The primary purpose of \textsc{spiderman} is to produce lightcurves to compare with the data. Now that the functioning of the geometric integrator has been described, lightcurve generation is quite simple.
+
+Given a series of time points, the ephemeris of the system, the system scale and the planet star radius ratio, the position of the planet relative to the star can be calculated for each timestep.
+
+Since it is assumed that the planet is tidally locked, at each timestep the geometric grid representing the planet is populated with the appropriate fluxes from the chosen flux distribution model.
+
+Then, for each segment on the planet, it is checked whether it is currently being occulted. This is quickly achieved by checking for contact between the edges of the region and the edge of the star. If there are no contact points, and the distance from the center point to the center point of the star is greater than the stellar radius, then the segment is fully visible, and the full flux is counted, if the distance is less then the stellar radius then it is fully occulted and no flux is added. For cases of partial coverage, the previously described geometric integrator is used to calculate the flux that should be added.
+
+To this, the pre-calculated stellar total flux is added to give the total system flux. This is then divided by the stellar flux to give a relative lightcurve that can easily be compared to data.
 
 \section{The \textsc{spiderman} package}\label{sec:package}
 
@@ -502,7 +518,7 @@ In regards to the re-analysis of WASP-43bs phase curve, future analysis will foc
 \begin{figure*}
 \begin{center}
 \includegraphics[width=\textwidth]{img/huge_triangle.pdf}
-\caption{stupidly big triangle plot1}
+\caption{This triangle plot includes all the parameters that were used to fit the free limb darkening case.}
 \label{fig:big triangle}
 \end{center}
 \end{figure*}
