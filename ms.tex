@@ -82,7 +82,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[spiderman]{\textsc{spiderman}: an open source code to model phase curves and secondary eclipses.}
+\title[SPIDERMAN]{SPIDERMAN: an open source code to model phase curves and secondary eclipses.}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -131,27 +131,21 @@ Secondary eclipses and phase curves can give direct insight into the thermal tra
 
 Hot Jupiters are expected to be tidally locked to their parent stars, resulting in a permanent day and night side with enormous differences in incident flux. The details of the heat transport in the atmosphere will effect how efficiently energy can be transported between the two hemispheres of the planet.
 
-The planets are hot enough that they have appreciable infrared flux emission, with contrasts with their parents stars of order 0.1\%, making detection with current generation instruments feasible. \citet{Deming2005} detected the infrared flux of HD\,209458b by observing the secondary transit of the planet with the MIPS instrument on \emph{Spitzer}. Using the IRAC instrument on \emph{Spitzer}, \citet{Knutson2007b} went on to measure the secondary eclipse of HD\,189733b with high precision, and also show that the system displayed a sinusoidal \emph{phase curve}, caused by the bright regions of the planet rotating into and out of view. Intriguingly, the phase of this sinusoidal curve was significantly offset from the time of secondary eclipse, validating earlier predictions from GCM's.
+General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}. An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots. An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be offset from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity. \citet{Zhang2016} showed that this behaviour could be captured with a simple analytical formalism.
+
+Hot Jupiters are hot enough that they have appreciable infrared flux emission, with contrasts with their parents stars of order 0.1\%, making direct detection with current generation instruments feasible. \citet{Deming2005} detected the infrared flux of HD\,209458b by observing the secondary transit of the planet with the MIPS instrument on \emph{Spitzer}. Using the IRAC instrument on \emph{Spitzer}, \citet{Knutson2007b} went on to measure the secondary eclipse of HD\,189733b with high precision, and also show that the system displayed a sinusoidal \emph{phase curve}, caused by the bright regions of the planet rotating into and out of view. Intriguingly, the phase of this sinusoidal curve was significantly offset from the time of secondary eclipse, validating earlier predictions from GCM's.
+
+There appear to be, broadly, two classes of exoplanet atmospheres with regards to heat transport. $\mu$ Andromedae, HD\,179949b and HD\,209458b are all significantly hotter than HD\,189733b and display much higher temperature contrasts between the day and night sides, implying inefficient redistribution of energy. \citep{Harrington2006,Cowan2007,zellem2014}. 
+
+The high velocity winds transporting this energy have been predicted to be on the order of kilometers per second, which would leave a measurable imprint on the spectral absorption lines in the planets atmosphere through Doppler shifting \citep[e.g.][]{Showman2013}, and indeed, this effect has been observed in the transit of HD\,209458b \citep{Snellen2010} and HD\,189733b \citep{Louden2015}. 
+
+WASP-43b is similarly an extremely hot Jupiter, so would be expected to have high temperature contrast between day and night sides. The primary and secondary eclipses of this planet, as well as the phase curve, have been measured with HST WFC3 and reported in \citep{Stevenson2014}, and these data will be re-analysed here.
 
 Excitingly, it is possible to invert phase curves to give information on the longitudinal brightness distribution of the exoplanet, providing a way to map the surfaces of other worlds. 
 
 \cite{Majeau2012} showed that as well as mapping longitudinally with phase curves, it is possible to get a two dimensional map of the dayside of an exoplanet from the secondary eclipse, provided that there is a non zero impact parameter. This technique works because the inclination of the system results in the occulting limb of the star scanning across the disc of the planet in both longitude and latitude during ingress and egress. The brightness distribution of the planet's permanent dayside will be imprinted on the precise shape of the ingress and egress curves.
 
-There appear to be, broadly, two classes of exoplanet atmospheres with regards to heat transport. $\mu$ Andromedae, HD\,179949b and HD\,209458b are all significantly hotter than HD\,189733b and display much higher temperature contrasts between the day and night sides, implying inefficient redistribution of energy. \citep{Harrington2006,Cowan2007,zellem2014}. WASP-43b is similarly an extremely hot Jupiter, so would be expected to have high temperature contrast between day and night sides. The primary and secondary eclipses of this planet, as well as the phase curve, have been measured with HST WFC3 and reported in \citep{Stevenson2014}, and these data will be re-analysed here.
-
-The high velocity winds transporting this energy have been predicted to be on the order of kilometers per second, which would leave a measurable imprint on the spectral absorption lines in the planets atmosphere through Doppler shifting \citep[e.g.][]{Showman2013}, and indeed, this effect has been observed in the transit of HD\,209458b \citep{Snellen2010} and HD\,189733b \citep{Louden2015}. 
-
-General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}
-
-An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots.
-
-An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be offset from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity. 
-
-\citet{Zhang2016} showed that this behaviour could be captured with a simple analytical formalism.
-
-BATMAN \citep{Kreidberg2015a}
-
-There does not currently exist an open source code for calculating secondary eclipses and phase curves in a self consistent way, \textsc{spiderman} is designed to fulfil this role, and it is is hoped that it will be of use to the community.
+BATMAN \citep{Kreidberg2015a} is a fast and accurate analytical model of exoplanet primary transits, the code is open source and publicly available. BATMAN serves as the inspiration for this project, as there does not currently exist an open source code for calculating both secondary eclipses and phase curves in a self consistent way, \textsc{spiderman} is designed to fulfil this role, and it is is hoped that it will be of use to the community.
 
 \section{The model}\label{sec:the model}
 
@@ -255,13 +249,15 @@ At present \textsc{spiderman} only interpolates in temperature, and picks the cl
 
 The primary purpose of \textsc{spiderman} is to produce lightcurves to compare with the data. Now that the functioning of the geometric integrator has been described, lightcurve generation is quite simple.
 
-Given a series of time points, the ephemeris of the system, the system scale and the planet star radius ratio, the position of the planet relative to the star can be calculated for each timestep.
+Given a series of time points, the ephemeris of the system, the system scale and the planet star radius ratio, the position of the planet relative to the star can be calculated for each timestep. Light time of travel effects are accounted for, with the semi-major axis as a parameter.
 
 Since it is assumed that the planet is tidally locked, at each timestep the geometric grid representing the planet is populated with the appropriate fluxes from the chosen flux distribution model.
 
 Then, for each segment on the planet, it is checked whether it is currently being occulted. This is quickly achieved by checking for contact between the edges of the region and the edge of the star. If there are no contact points, and the distance from the center point to the center point of the star is greater than the stellar radius, then the segment is fully visible, and the full flux is counted, if the distance is less then the stellar radius then it is fully occulted and no flux is added. For cases of partial coverage, the previously described geometric integrator is used to calculate the flux that should be added.
 
 To this, the pre-calculated stellar total flux is added to give the total system flux. This is then divided by the stellar flux to give a relative lightcurve that can easily be compared to data.
+
+Note that \textsc{spiderman} does not calculate primary transits. To fit models to data that contain both primary and secondary eclipses, \textsc{spiderman} should be combined with another package such as BATMAN. The parameter naming convention and call sequence fro \textsc{spiderman} has been chosen specifically to be compatible with BATMAN for this reason. 
 
 \section{The \textsc{spiderman} package}\label{sec:package}
 
@@ -309,10 +305,10 @@ Will display the planet from the perspective of the observer on Earth at the des
 typing the command
 
 \begin{Verbatim}[frame=single]
-> spider_params.plot_system()
+> spider_params.plot_system(t)
 \end{Verbatim}
 
-will generate a plot like figure \ref{fig:plot_system}, which is a scale diagram of the system. The desired phase or julian date can be given as an argument. These plots can be very useful for visualising the physical impacts of
+will generate a plot like figure \ref{fig:plot_system}, which is a scale diagram of the system. The desired phase or julian date can be given as an argument. These plots can be very useful for visualising the physical impacts of the chosen parameters.
 
 \begin{figure*}
 \begin{center}
@@ -348,7 +344,7 @@ In principle, constraints being placed on the limb darkening can constrain the v
 
 As this effect is poorly understood, we run the fit both with and without planetary limb darkening.
 
-WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which should correspond to a zero limb darkening. However, as discussed in \ref{sec:discussion}, we will show there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
+WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which should correspond to a zero limb darkening. However, as discussed in \ref{sec:results}, we will show there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
 
 \subsection{Systematics model}\label{sec:systematics}
 
@@ -387,17 +383,19 @@ Future analysis of this dataset could use a Gaussian process noise model instead
 
 \subsection{MCMC}\label{sec:MCMC}
 
-It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee}  affine invariant monte carlo implementation of \citet{Foreman-Mackey2013}
+It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee} affine invariant Monte Carlo implementation of \citet{Foreman-Mackey2013}.
 
-During the MCMC fit we place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
+The initial parameter positions are found with a least squares minimisation approach, and the 1000 walkers were placed in a tight Gaussian ball around these best fitting values.
 
-The initial parameter positions are found with a least squares minimisation approach, and the walkers 
+Due to the uncertainties around planetary limb darkening, we choose to run a model with limb darkening disabled, and a second where the limb darkening fit for, with minimal constraints. During the MCMC fit that includes planetary limb darkening, we place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
 
-For both models, the MCMC was run for 10 million steps, with the first 200,000 steps were discarded as burn in.
+For the orbital and system parameters we use published values and errorbars as the priors. For the Period, inclination and $a/R_*$ we use the results of \citet{Hoyer2016}, and for $a$ the value from \citet{Hellier2011a}, The eccentricity was fixed at 0, which is well supported by the findings of \citet{Hoyer2016}. The stellar log g and effective temperature priors are from \citet{Gillon2012}.
+
+For both models, the MCMC was run for 10 million steps, with the first 200,000 steps discarded as burn in.
 
 \subsection{Results and discussion}\label{sec:results}
 
-The results of both runs are presented In table \ref{tab:results}. There is very little difference between the fitted parameters with and without limb darkening. The value of $T_n$ is lower by more than $3\sigma$ in the fit with planetary limb darkening
+The best fitting model and the residuals are shown in figure \ref{fig:phase folded} as a function of planetary phase, after correction for instrument systematics. The data and model are also plotted as a function of time in figure \ref{fig:systematics}. To demonstrate the systematics model the data are plotted with and without systematics correction.
 
 \begin{figure}
 \begin{center}
@@ -407,6 +405,8 @@ The results of both runs are presented In table \ref{tab:results}. There is very
 \end{center}
 \end{figure}
 
+The results of both runs are presented In table \ref{tab:results}. There is very little difference between the fitted parameters with and without limb darkening. The value of $T_n$ is lower by more than $3\sigma$ in the fit with planetary limb darkening, but the other parameters in the physical model, $\Delta T$ and $\xi$ are consistent to within $2\sigma$ between the two runs. it is particularly worth noting how apparently unaffected $\xi$ is by the presence of limb darkening, the difference being much less than $1\sigma$. This makes sense, as $\xi$ effectively parametrises the asymmetry in the flux distribution, while the limb darkening is symmetrical. This is fortunate, as $\xi$ is the most physically interesting of the model parameter, and is directly tied to the details of heat transport in the atmosphere. The insensitivity of this parameter to limb darkening is important, as it shows that it can be recovered reliably even in ignorance of the vertical temperature structure of the planets atmosphere.
+
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{img/free_parameterstriangle.pdf}
@@ -415,9 +415,35 @@ The results of both runs are presented In table \ref{tab:results}. There is very
 \end{center}
 \end{figure}
 
+It is also interesting to check the correlation of this $\xi$ parameter with the other model parameters, this can be seen in the corner plot in figure \ref{fig:triangle corner sub}, which is a subset of the full diagram in figure \ref{fig:big triangle}. $T_s$ and $\Delta T$ are clearly correlated parameters, which is logical, as between them they determine the average temperature of the dayside, which controls the amplitude of the phase curve. Crucially, $\xi$ is not strongly degenerate with the other parameters. This indicates that the $\xi$ parameter is robust to any errors in the absolute flux level of the system, due to, for example, not modelling the instrument response curve.
+
+The visual representation of the flux maps for the non-limb darkened case can be seen in figure \ref{fig:best_fit_flux}. The best fitting model is displayed at 4 phases, as well as the relative error on the flux distribution. The error map was generated by drawing 10,000 maps from the MCMC posterior and taking the standard deviation of the fluxes in each segment. The offset hot-spot is significant and clearly visible. The underlying temperature maps, and the errors in these, are shown in figure \ref{fig:best_fit_temp}.
+
+An intriguing difference between our model fit and the previous fit by \citet{Stevenson2014} is that we are able to infer a nightside temperature, where they were only able to place upper limits. To demonstrate that the flux from the nightside is a real feature in the model fit, and not an abstract parameterisation of some other feature, we investigate the flux level just outside of the primary transit. If the nightside has indeed been significantly detected, the flux here should be significantly different to the star-only flux visible during the secondary eclipse (which is 1.0 by definition). Drawing 10,000 lightcurves from the parameters in the non-limb darkened MCMC posterior, we plot the median, 1 sigma and 3 sigma contours for the lightcurve in figure \ref{fig:model}. The flux both just before, and just after the primary transit is significantly greater than 1.0 at the 3 sigma level, indicating that there is indeed flux detected from the night side of the planet.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/model.pdf}
+\caption{the uncertainty on the model from the MCMC fit. There is a greater than 3 sigma detection of night-side flux.}
+\label{fig:model}
+\end{center}
+\end{figure}
+
+Repeating this test with the limb darkened fit does not find significant night side flux, which casts doubt on the significance of this detection. The difference between our two model results and the results of \citet{Stevenson2014} may be due to the detrending process, or in the sample of data used in the final fit, and requires more investigation. 
+
+Surprisingly, the model fit including limb darkening actually shows a significant preference for \emph{limb brightened} profiles. To visualise this, 10,000 limb profiles are drawn from the posterior, and their one and three sigma confidence intervals plotted in figure \ref{fig:limb brighten}. The profiles are clearly limb brightened, which is unexpected, since previous work has shown that WASP-43b has a near isothermal profile which would inhibit limb brightening or limb darkening \citep{Stevenson2014}. However, despite this unexpected result, as previously discussed, there is no significant difference to the physical model fit of \citep{Zhang2016}, which raises our confidence in the robustness of the fit to any potential errors in the symmetric radial component of the surface map.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/ld_prof.pdf}
+\caption{The 1 sigma and 3 sigma contours for the Radial intensity profile of the planet, indicating that the fit has a significant preference for limb brightened profiles }
+\label{fig:limb brighten}
+\end{center}
+\end{figure}
+
 \begin{center}
 \begin{table*}{
-\caption{This is my caption}
+\caption{The full results from the MCMC fit both with and without planetary limb darkening included.}
 \begin{center}
 \begin{tabular}{l c c c c c}
 \hline
@@ -460,46 +486,12 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 \end{table*}
 \end{center}
 
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/free_parametersflux_map.pdf}
-\includegraphics[width=\columnwidth]{img/free_parametersflux_errs.pdf}
-\caption{left: right: the constraints on the brightness distribution, for the model where the planetary limb darkening was switched off.}
-\label{fig:best_fit_flux}
-\end{center}
-\end{figure*}
-
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/free_parameterstemp_map.pdf}
-\includegraphics[width=\columnwidth]{img/free_parameterstemp_errs.pdf}
-\caption{The underlying temperature distributions generated by the zhang model.}
-\label{fig:best_fit_temp}
-\end{center}
-\end{figure*}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/model.pdf}
-\caption{the uncertainty on the model from the MCMC fit. There is a greater than 3 sigma detection of night-side flux.}
-\label{fig:model}
-\end{center}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/ld_prof.pdf}
-\caption{The 1 sigma and 3 sigma contours for the Radial intensity profile of the planet, indicating that the fit has a significant preference for limb brightened profiles }
-\label{fig:limb brighten}
-\end{center}
-\end{figure}
-
 \section{Future work}\label{sec:future work}
 
 \textsc{spiderman} is still under development, and there are a number of features that are planned to be implemented:
 
 \begin{itemize}
-\item More thermal brightness distributions, such as an "orange segments" model and a simple parametrised hotspot which can be offset in latitude and longitude
+\item More thermal brightness distributions, such as an ``orange segments'' model and a simple parametrised hotspot which can be offset in latitude and longitude
 \item Implement \emph{reflected} light phase curves and secondary eclipses, through adding appropriate brightness distributions like Lambertian reflectors and patchy clouds.
 \item Allow calculation of multiple spectral channels simultaneously, with linked system parameters.
 \item Include instrument response in calculating flux ratios
@@ -519,7 +511,25 @@ In regards to the re-analysis of WASP-43bs phase curve, future analysis will foc
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.8\textwidth]{img/systematics.pdf}
+\includegraphics[width=\columnwidth]{img/free_parametersflux_map.pdf}
+\includegraphics[width=\columnwidth]{img/free_parametersflux_errs.pdf}
+\caption{left: The best fitting flux distribution for the model where the planetary limb darkening was switched off at 4 phases, from top left clockwise the phases are 0, 0.25, 0.75 and 0.5. right: The respective constraints on the brightness distribution}
+\label{fig:best_fit_flux}
+\end{center}
+\end{figure*}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\columnwidth]{img/free_parameterstemp_map.pdf}
+\includegraphics[width=\columnwidth]{img/free_parameterstemp_errs.pdf}
+\caption{The underlying temperature distributions generated by the zhang model.}
+\label{fig:best_fit_temp}
+\end{center}
+\end{figure*}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{img/systematics.pdf}
 \caption{Top: raw data from HST, the systematic components are all visible. second panel shows the physical model fit (red) and the systematic model (blue). The third panel shows the model fit to the data with the systematic noise component removed, the fourth panel is the residuals of the fit.
 }
 \label{fig:systematics}
@@ -536,7 +546,7 @@ In regards to the re-analysis of WASP-43bs phase curve, future analysis will foc
 
 \section*{Acknowledgements}
 
-The majority of this work was carried out at the kavli summer program in physics 2016. T.L extends his gratitude to the program organisers, in particular Jonothan Fortney and Pascale Geurard.
+The majority of this work was carried out at the kavli summer program in physics 2016. T.L extends his gratitude to the program organisers, in particular Jonothan Fortney and Pascale Garaud.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
