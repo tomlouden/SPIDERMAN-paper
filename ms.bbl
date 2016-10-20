@@ -27,6 +27,11 @@ Cowan N.~B.,  Agol E.,   Charbonneau D.,  2007, \mn@doi [MNRAS]
 Deming D.,  Seager S.,   Richardson L.~J.,  2005, \mn@doi [Nature]
   {10.1038/nature03473.1.}, 434, 740
 
+\bibitem[\protect\citeauthoryear{Foreman-Mackey, Hogg, Lang  \&
+  Goodman}{Foreman-Mackey et~al.}{2013}]{Foreman-Mackey2013}
+Foreman-Mackey D.,  Hogg D.~W.,  Lang D.,   Goodman J.,  2013, \mn@doi [PASP]
+  {10.1086/670067}, 125, 306
+
 \bibitem[\protect\citeauthoryear{Gibson, Aigrain, Roberts, Evans, Osborne  \&
   Pont}{Gibson et~al.}{2012}]{Gibson2012a}
 Gibson N.~P.,  Aigrain S.,  Roberts S.,  Evans T.~M.,  Osborne M.,   Pont F.,
@@ -70,11 +75,6 @@ Showman A.~P.,  Fortney J.~J.,  Lian Y.,  Marley M.~S.,  Freedman R.~S.,
   et~al.}{2013}]{Showman2013}
 Showman A.~P.,  Fortney J.~J.,  Lewis N.~K.,   Shabram M.,  2013, \mn@doi [ApJ]
   {10.1088/0004-637X/762/1/24}, 762, 24
-
-\bibitem[\protect\citeauthoryear{Showman, Lewis  \& Fortney}{Showman
-  et~al.}{2015}]{Showman2015}
-Showman A.~P.,  Lewis N.~K.,   Fortney J.~J.,  2015, \mn@doi [ApJ]
-  {10.1088/0004-637X/801/2/95}, 801, 95
 
 \bibitem[\protect\citeauthoryear{Snellen, de Kok, de Mooij  \&
   Albrecht}{Snellen et~al.}{2010}]{Snellen2010}

@@ -15,15 +15,15 @@ while executing---line 1822 of file mnras.bst
 while executing---line 1822 of file mnras.bst
 You've used 17 entries,
             2881 wiz_defined-function locations,
-            875 strings with 11039 characters,
-and the built_in function-call counts, 8135 in all, are:
-= -- 617
-> -- 661
+            877 strings with 10899 characters,
+and the built_in function-call counts, 8173 in all, are:
+= -- 623
+> -- 664
 < -- 35
-+ -- 267
-- -- 116
-* -- 990
-:= -- 1322
++ -- 266
+- -- 118
+* -- 993
+:= -- 1327
 add.period$ -- 0
 call.type$ -- 17
 change.case$ -- 34
@@ -31,8 +31,8 @@ chr.to.int$ -- 17
 cite$ -- 17
 duplicate$ -- 386
 empty$ -- 377
-format.name$ -- 164
-if$ -- 1394
+format.name$ -- 166
+if$ -- 1404
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 17
@@ -44,7 +44,7 @@ purify$ -- 68
 quote$ -- 0
 skip$ -- 236
 stack$ -- 0
-substring$ -- 402
+substring$ -- 410
 swap$ -- 205
 text.length$ -- 69
 text.prefix$ -- 0

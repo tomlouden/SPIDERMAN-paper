@@ -88,7 +88,7 @@
 % If you need two or more lines of authors, add an extra line using \newauthor
 \author[T. Louden, L. Kreidberg]{Tom Louden$^{1}$\thanks{E-mail: t.m.louden@warwick.ac.uk} and Laura Kreidberg$^{2}$\\
 $^{1}$Department of Physics, University of Warwick, Coventry, CV4 7AL, UK\\
-$^{2}$Department of Astronomy, Harvard, America, America, America}
+$^{2}$Department of Astronomy, Harvard University, Cambridge, MA 02138, USA}
 
 % These dates will be filled out by the publisher
 \date{Accepted XXX. Received YYY; in original form ZZZ}
@@ -348,7 +348,7 @@ In principle, constraints being placed on the limb darkening can constrain the v
 
 As this effect is poorly understood, we run the fit both with and without planetary limb darkening.
 
-WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which should correspond to a zero limb darkening. However, as discussed in \ref{sec:discussion}, I will show there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
+WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which should correspond to a zero limb darkening. However, as discussed in \ref{sec:discussion}, we will show there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
 
 \subsection{Systematics model}\label{sec:systematics}
 
@@ -387,9 +387,9 @@ Future analysis of this dataset could use a Gaussian process noise model instead
 
 \subsection{MCMC}\label{sec:MCMC}
 
-It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee}  affine invariant monte carlo implementation of \citet{emcee}
+It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee}  affine invariant monte carlo implementation of \citet{Foreman-Mackey2013}
 
-During the MCMC fit I place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
+During the MCMC fit we place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
 
 The initial parameter positions are found with a least squares minimisation approach, and the walkers 
 
