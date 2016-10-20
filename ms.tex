@@ -141,8 +141,6 @@ There appear to be, broadly, two classes of exoplanet atmospheres with regards t
 
 The high velocity winds transporting this energy have been predicted to be on the order of kilometers per second, which would leave a measurable imprint on the spectral absorption lines in the planets atmosphere through Doppler shifting \citep[e.g.][]{Showman2013}, and indeed, this effect has been observed in the transit of HD\,209458b \citep{Snellen2010} and HD\,189733b \citep{Louden2015}. 
 
-\citep[e.g.][]{Showman2015}
-
 General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}
 
 An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots.
@@ -283,15 +281,29 @@ Or, to access the bleeding-edge development version from github:
 
 Full installation instructions and other information are available in the documentation, at \url{http://spiderman.readthedocs.io}
 
-\textsc{spiderman} comes prepackaged with several plotting scripts to make visualisation of the model simple.
-
-typing the command
+A model instance is initialised by typing
 
 \begin{Verbatim}[frame=single]
-> spider_params.plot_planet()
+> spider_params = spiderman.ModelParams(MODEL)
 \end{Verbatim}
 
-Will display the planet from the perspective of the observer on Earth at the desired phase or Julian date. If the chosen model uses a temperature distribution, then these plots can be made for both the temperature and the calculated flux distribution.
+Where MODEL is the chosen surface brightness distribution. The model parameters are then entered, and from there, generating a lightcurve to compare to data is as simple as entering
+
+\begin{Verbatim}[frame=single]
+> spider_params.lightcurve(t)
+\end{Verbatim}
+
+Where t an array of timepoints where the model is to be evaluated.
+
+\textsc{spiderman} comes prepackaged with several plotting scripts to make visualisation of the model simple.
+
+Typing the command
+
+\begin{Verbatim}[frame=single]
+> spider_params.plot_planet(t)
+\end{Verbatim}
+
+Will display the planet from the perspective of the observer on Earth at the desired phase or Julian date (t). If the chosen model uses a temperature distribution, then these plots can be made for both the temperature and the calculated flux distribution.
 
 
 typing the command
@@ -316,7 +328,7 @@ will generate a plot like figure \ref{fig:plot_system}, which is a scale diagram
 
 In typical usage, SPIDERMAN is capable of producing over 1000 models per second on a single core. This means that a 1 million MCMC sample can be generated in approximately a quarter of an hour.
 
-The performance tests were carried out on a single core of an Intel Core I5-3470 Processor.
+Figure \ref{fig:exec_time} shows the result of a performance test carried out on a single core of an Intel Core I5-3470 Processor. The length of time to produce a model with 1000 timepoints as a function of the number of segments of the model. The test shows that the execution time scales linearly with the number of segments in the model, which is expected, showing the overhead to run the model is very small. The precision required for typical usage can easily be reached using 16 or 25 segments, but larger numbers of segments can be used to produce better looking diagrams. The diagrams in this paper were generated with a 400 segment model.
 
 \begin{figure}
 \begin{center}
@@ -326,9 +338,6 @@ The performance tests were carried out on a single core of an Intel Core I5-3470
 \end{center}
 \end{figure}
 
-\subsection{Available models}\label{sec:ttof}
-
-
 \section{Application to data}\label{sec:Application}
 
 As a test of the performance of the code the model was applied to a phase curve and secondary eclipse of WASP-43b taken with HST WFC3. These data had previously been published in \citet{Stevenson2014}. However, in this paper the phase curve and the secondary eclipse are treated as separate phenomena, when of course, they are both manifestations of the same underlying brightness distribution. Indeed, the bright dayside of the planet is the main driver of the phase curve, and is also the part occulted by the stellar disc. It is therefore more parsimonious, if at all possible, to use a model that accounts for both of these observations simultaneously. This also reduces the total number of parameters needed, which implies a better information content.
@@ -336,6 +345,8 @@ As a test of the performance of the code the model was applied to a phase curve 
 One could argue that planetary limb darkening, among other effects, will act to decouple the secondary eclipse from the phase curve, and there are not good constraints on what to expect from the limb darkening as it requires a full atmosphere model treatment. \textsc{spiderman} does have the option to include planetary limb darkening, which would allow one to marginalise over the uncertainty in these parameters. 
 
 In principle, constraints being placed on the limb darkening can constrain the vertical temperature profile of the planet, however this would require a full radiative transfer treatment of the planet.
+
+As this effect is poorly understood, we run the fit both with and without planetary limb darkening.
 
 WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which should correspond to a zero limb darkening. However, as discussed in \ref{sec:discussion}, I will show there is a preference in the fit for a \emph{limb brightened profile} which may indicate the presence of a weak thermal inversion layer, or may simply be due to oversimplifications in the model fit.
 
@@ -376,15 +387,17 @@ Future analysis of this dataset could use a Gaussian process noise model instead
 
 \subsection{MCMC}\label{sec:MCMC}
 
-The only way to properly access the errors on the parameter values of interest, and test for degeneracies
+It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee}  affine invariant monte carlo implementation of \citet{emcee}
 
 During the MCMC fit I place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
 
+The initial parameter positions are found with a least squares minimisation approach, and the walkers 
+
 For both models, the MCMC was run for 10 million steps, with the first 200,000 steps were discarded as burn in.
 
-\subsection{Results}\label{sec:results}
+\subsection{Results and discussion}\label{sec:results}
 
-In table \ref{tab:results}
+The results of both runs are presented In table \ref{tab:results}. There is very little difference between the fitted parameters with and without limb darkening. The value of $T_n$ is lower by more than $3\sigma$ in the fit with planetary limb darkening
 
 \begin{figure}
 \begin{center}
@@ -464,8 +477,6 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 \label{fig:best_fit_temp}
 \end{center}
 \end{figure*}
-
-\subsection{Discussion}\label{sec:Discussion}
 
 \begin{figure}
 \begin{center}
