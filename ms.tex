@@ -109,7 +109,7 @@ Presenting \textsc{spiderman}, a fast code for calculating exoplanet phase curve
 
 Using a geometrical algorithm, the code solves exactly the area of sections of the disc of the planet that are occulted by the star. The code is written in C and optimised to run extremely quickly, with no loss in precision. Approximately 1000 models can be generated per second with typical parameters.
 
-Using an analytical approximation to the results of General Circulation Models, we apply the code to archival data on the phase curve of WASP-43b, providing an excellent fit to the data, and placing constraints of the physics of the atmosphere, such as the ratio between advective and radiative timescales.
+Using an analytical approximation to the results of General Circulation Models, we apply the code to archival data on the phase curve of WASP-43b, providing an excellent fit to the data, and placing constraints on the physics of heat transport in the atmosphere, such as the ratio between advective and radiative timescales.
 
 The development version of the code is available at \url{https://github.com/tomlouden/spiderman}.
 
@@ -155,16 +155,15 @@ The model is designed so that an arbitrary brightness distribution can be used, 
 
 The visible disc of the planet is divided into a series of annuli, and then these in turn are separated in theta. The number of segments in each annuli are chosen so that the area of every sector is the same. This results in 1 circular segment in the center, then 3 regions in the second annuli See the schematic in figure \ref{fig:schematic}. The planet is defined to have a radius of 1. Other grid schemes could be implemented in future versions, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
 
-
 In practice, it is found that dividing the planet into 5 radially (25 total sectors) gives results within a few percent of higher density grids, and is significantly faster to run.
 
 Each of the grid segments is a well defined geometric shape for which it is simple to calculate the fraction blocked by the planet passing behind the star, which in the model is represented as an occulting circle.
 
 The area of one of these geometrical segments that has been blocked by the star can always be calculated by breaking the area into a combination of circle segments and triangles, for which the areas are known.
 
-There are a small number of different general "cases" for the numbers of triangles and segments that must be used, that can be selected based on the number and types of "collision points" between the planet region and the stellar circle. Therefore, the first step for calculating the occulted area for each segment of the planet is to calculate these collision points. Within \textsc{spiderman} the region boandaries are stored as the radius of the inner and outer arcs, and the $\theta$ angle of the two radial lines.
+There are a small number of different general ``cases" for the numbers of triangles and segments that must be used, that can be selected based on the number and types of ``collision points" between the planet region and the stellar circle. Therefore, the first step for calculating the occulted area for each segment of the planet is to calculate these collision points. Within \textsc{spiderman} the region boandaries are stored as the radius of the inner and outer arcs, and the $\theta$ angle of the two radial lines.
 
-Finding the collision points between an arc or a line and a circle (the star), if any exist, are trivial and fast to calculate. The code then classifies the geometric "case" of the collision based on the number of collision points on the 4 boundary sides.
+Finding the collision points between an arc or a line and a circle (the star), if any exist, are trivial and fast to calculate. The code then classifies the geometric ``case" of the collision based on the number of collision points on the 4 boundary sides.
 
 For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles.
 
@@ -200,7 +199,7 @@ A lightcurve is calculated for each of these cases, and then the difference is t
 
 \textsc{spiderman} projects this temperature map onto the visible sphere of the planet, meaning it is used directly to calculate the secondary eclipse and phase curve. This is the first time a physical model of atmosphere circulation has been used to directly fit to data.
 
-The $\xi$ parameter is perhaps the most interesting, as it effectively parameterises the degree to which the hotspot of the planet will be offset from the substellar point by the circulation of the plant's atmosphere. The effects of this can be seen in \ref{fig:ex_lcs}, where
+The $\xi$ parameter is perhaps the most interesting, as it effectively parameterises the degree to which the hotspot of the planet will be offset from the substellar point by the circulation of the plant's atmosphere. The effects of this can be seen in \ref{fig:ex_lcs}, where both the position of the maxima of the phase curve, and the shape of the ingress and egress of the secondary eclipse are clearly effected by this asymmetry.
 
 \begin{figure}
 \begin{center}
@@ -350,7 +349,7 @@ WASP-43b appears to have a near isothermal profile \citep{Stevenson2014}, which 
 
 As with most exoplanet observations with Hubble, the data are effected by the idiosyncratic systematic errors of the instrument. Fortunately, the sources of these errors are relatively well understood, and are generally quite repeatable between observations. They are therefore quite straightforward to fit for and remove. 
 
-The systematics have effects on scales of \emph{visits}, \emph{orbits} and individual exposures, where a visit is a continuous set of orbits directed at a target. Due to the low earth orbit of Hubble, each complete orbit lasts 95 minutes, and for approximately half of this time the target will be unobservable due to being behind the Earth. For this reason, a complete exoplanet transit can not be observed with one "visit", and it is necessary to observe several transits with different temporal phasing to completely cover the full orbital phase of the system.
+The systematics have effects on scales of \emph{visits}, \emph{orbits} and individual exposures, where a visit is a continuous set of orbits directed at a target. Due to the low earth orbit of Hubble, each complete orbit lasts 95 minutes, and for approximately half of this time the target will be unobservable due to being behind the Earth. For this reason, a complete exoplanet transit can not be observed with one ``visit", and it is necessary to observe several transits with different temporal phasing to completely cover the full orbital phase of the system.
 
 In this study, three visits, each with 12 orbits was used to cover the full phase of WASP-43. The phasing can be seen in figure \ref{fig:systematics}, and a phase folded lightcurve can be seen in figure \ref{fig:phase folded}
 
@@ -546,7 +545,7 @@ In regards to the re-analysis of WASP-43bs phase curve, future analysis will foc
 
 \section*{Acknowledgements}
 
-The majority of this work was carried out at the kavli summer program in physics 2016. T.L extends his gratitude to the program organisers, in particular Jonothan Fortney and Pascale Garaud.
+The majority of this work was carried out at the kavli summer program in physics 2016. T.L extends his gratitude to the program organisers, in particular Jonathan Fortney and Pascale Garaud.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
