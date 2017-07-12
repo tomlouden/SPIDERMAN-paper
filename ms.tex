@@ -26,7 +26,7 @@
 % MNRAS is set in Times font. If you don't have this installed (most LaTeX
 % installations will be fine) or prefer the old Computer Modern fonts, comment
 % out the following line
-\usepackage{newtxtext,newtxmath}
+%\usepackage{newtxtext,newtxmath}
 % Depending on your LaTeX fonts installation, you might get better results with one of these:
 %\usepackage{mathptmx}
 %\usepackage{txfonts}
@@ -107,9 +107,11 @@ $^{2}$Department of Astronomy, Harvard University, Cambridge, MA 02138, USA}
 
 Presenting \textsc{spiderman}, a fast code for calculating exoplanet phase curves and secondary eclipses with arbitrary surface brightness distributions.
 
-Using a geometrical algorithm, the code solves exactly the area of sections of the disc of the planet that are occulted by the star. The code is written in C and optimised to run extremely quickly, with no loss in precision. Approximately 1000 models can be generated per second with typical parameters.
+Using a geometrical algorithm, the code solves exactly the area of sections of the disc of the planet that are occulted by the star. The code is written in C and optimised to run quickly, with no loss in precision. Approximately 1000 models can be generated per second with typical parameters, making Markov Chain Monte Carlo analyses practiable. 
 
-Using an analytical approximation to the results of General Circulation Models, we apply the code to archival data on the phase curve of WASP-43b, providing an excellent fit to the data, and placing constraints on the physics of heat transport in the atmosphere, such as the ratio between advective and radiative timescales.
+Using an analytical approximation to the results of General Circulation Models, we apply the code to archival data on the phase curve of WASP-43b. The model provides a good fit to the data, however, the best fitting model significantly overpredicts the temperature of the night-side. We speculate that this could be due to the presence of clouds on the night side of the planet.
+
+We test statistically for variation of the map parameters as a function of wavelength and find no statistically strong confirmation of a dependence.
 
 The development version of the code is available at \url{https://github.com/tomlouden/spiderman}.
 
@@ -127,11 +129,13 @@ The development version of the code is available at \url{https://github.com/toml
 
 \section{Introduction}\label{sec:introduction}
 
-Secondary eclipses and phase curves can give direct insight into the thermal transport processes, and vertical structure of an exoplanet atmosphere.
+Secondary eclipses and phase curves can give direct insight into the thermal transport processes, and when wavelength resolved also give information on the vertical structure of an exoplanet atmosphere.
 
 Hot Jupiters are expected to be tidally locked to their parent stars, resulting in a permanent day and night side with enormous differences in incident flux. The details of the heat transport in the atmosphere will effect how efficiently energy can be transported between the two hemispheres of the planet.
 
-General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}. An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots. An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be offset from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity. \citet{Zhang2016} showed that this behaviour could be captured with a simple analytical formalism.
+General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}. An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots. The hotspot offset is the result of fast superotating equatorial winds in the atmosphere that arise from a coupling of planetary scale circulation and day night advection.
+
+An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be offset from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity. \citet{Zhang2016} showed that this behaviour could be captured with a simple analytical formalism.
 
 Hot Jupiters are hot enough that they have appreciable infrared flux emission, with contrasts with their parents stars of order 0.1\%, making direct detection with current generation instruments feasible. \citet{Deming2005} detected the infrared flux of HD\,209458b by observing the secondary transit of the planet with the MIPS instrument on \emph{Spitzer}. Using the IRAC instrument on \emph{Spitzer}, \citet{Knutson2007b} went on to measure the secondary eclipse of HD\,189733b with high precision, and also show that the system displayed a sinusoidal \emph{phase curve}, caused by the bright regions of the planet rotating into and out of view. Intriguingly, the phase of this sinusoidal curve was significantly offset from the time of secondary eclipse, validating earlier predictions from GCM's.
 
