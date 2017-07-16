@@ -161,11 +161,19 @@ In this paper we first describe the model, and provide a brief overview of the u
 
 \subsection{Integrator design}\label{sec:integrator}
 
-The model is designed so that an arbitrary brightness distribution can be used, and that the resulting phase curve and secondary eclipse lightcurves can be calculated rapidly and accurately. 
+In order to accurately calculate both the phase curve and secondary eclipse the code must integrate over the portion of the planet that is facing the observer and is not occulted by the star at each time-step. In order to be general use and ``model agnostic'' the integrator cannot assume any specific properties or symmetries in the brightness distribution. This can be done numerically, by sampling a grid of points on the planets surface and summing those that are visible, but to achieve high precisions a large number of points would need to be sampled, which would be slow and computationally inefficient.
 
-The visible disc of the planet is divided into a series of annuli, and then these in turn are separated in theta. The number of segments in each annuli are chosen so that the area of every sector is the same. This results in 1 circular segment in the center, then 3 regions in the second annuli See the schematic in figure \ref{fig:schematic}. The planet is defined to have a radius of 1. Other grid schemes could be implemented in future versions, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
+Instead, \textsc{spiderman} uses an analytical integration scheme where the planet is divided into a relatively small number of regions, and the area of each region that is not occulted by the star is calculated exactly through geometry. The average surface brightness of each region is determined by the chosen model and multiplied by the visible area to get the total flux.
 
-In practice, it is found that dividing the planet into 5 radially (25 total sectors) gives results within a few percent of higher density grids, and is significantly faster to run.
+\textsc{spiderman} uses a radial co-ordinate system centered on the visible hemisphere of the planet. The planet is defined to have a radius of 1 and the visible disc of the planet is divided into a series of annuli, and then these in turn are separated in theta, see the schematic in figure \ref{fig:schematic}. The number of segments in each annuli are chosen so that the area of every sector is the same. This results in 1 circular segment in the center, then 3 regions in the second annuli and 5 in the third - with the number of segment in the nth annuli being 2n - 1. Using this scheme, dividing the planet n times radially results in a total of n$^2$ integration elements.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\columnwidth]{img/frame1.pdf}
+		\caption{Schematic representation of the planet grid. All sectors are equal area.}
+		\label{fig:schematic}
+	\end{center}
+\end{figure}
 
 Each of the grid segments is a well defined geometric shape for which it is simple to calculate the fraction blocked by the planet passing behind the star, which in the model is represented as an occulting circle.
 
@@ -177,21 +185,16 @@ Finding the collision points between an arc or a line and a circle (the star), i
 
 For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles.
 
-The advantage of this geometric approach is that the planet can be described by a small number of regions with no loss in numerical precision, enabling eclipses and phase curves to be calculated extremely rapidly.
+Numerical errors can be introduced by this approach if the brightness distribution changes significantly faster than the area elements, but the size of the elements can be adjusted as necessary by the user, at the cost of computation time.
+In practice, we found that dividing the planet into 5 radially (giving 25 total elements) gave sufficient precision for the smoothly varying brightness profile in our WASP-43b test case, and increasing the mesh density beyond this point did not change the results.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.8\columnwidth]{img/frame1.pdf}
-\caption{Schematic representation of the planet grid. All sectors are equal area.}
-\label{fig:schematic}
-\end{center}
-\end{figure}
+Other grid schemes could be defined, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
 
 \subsection{Integrator validation}\label{sec:numerical}
 
-To test that the integrator is working correctly, a simple test was conducted. Assuming a uniform brightness distribution, the number of sections that the planet is broken into for the integration should have zero impact on the final light-curve. With a large number of segments and time points, all geometrical cases will be met, and it will quickly become obvious if there is a mistake in how the areas have been calculated.
+Assuming a uniform brightness distribution, the number of sections that the planet is broken into for the integration should have no impact on the final light-curve.
 
-We compare the case of a single segment model, i.e., a circle, for which there is a single analytical solution to the area blocked by another circle, to one with 400 segments. In both cases the planet is assumed to have a total luminosity that is 1\% that of the star's.
+To test that the integrator is performing correctly we compare the case of a single segment model, i.e., a circle, for which there is a single analytical solution to the area blocked by another circle, to one with 400 segments. In both cases the planet is assumed to have a total luminosity that is 1\% that of the star's.
 
 A lightcurve is calculated for each of these cases, and then the difference is taken. The results of this test can be seen in figure \ref{fig:precision}, where it is clear that there is no difference between the two lightcurves greater than floating point precision (2.22e-16). We therefore consider the geometric integrator of \textsc{spiderman} to be validated.
 
@@ -203,7 +206,7 @@ A lightcurve is calculated for each of these cases, and then the difference is t
 \end{center}
 \end{figure}
 
-\subsection{The temperature model}\label{sec:temp model}
+\subsection{The brightness models}\label{sec:temp model}
 
 \textsc{spiderman} has been written in a modular way, so that users will be able to choose from a variety of models to fit to their data, or provide their own. 
 
@@ -251,31 +254,21 @@ This mode is intended to be used in particular for modelling eclipse mapping obs
 
 ((figure of 2D GCM results from Viven - would need permission))
 
-\subsection{Temperature to fluxes}\label{sec:ttof}
+\subsubsection{Converting temperature to fluxes}\label{sec:ttof}
 
-Some physical models, such as the one adapted from \citep{Zhang2016} are defined in terms of temperature, where of course the observable that is being fit for is the emitted flux. Therefore, it is necessary to convert from one to the other.
+Some physical models, such as the one adapted from \citep{Zhang2016}, are defined in terms of temperature, so \textsc{spiderman} must convert that to a flux. To do so we make the assumption that the temperature corresponds to the \emph{brightness temperature} of the planet's photosphere. This will be valid for band passes that are narrower than strong molecular bands in the spectrum, such as water or carbon monoxide, but will not hold over wide band-passes.
 
-If we make the assumption that the temperature distribution maps to the \emph{brightness temperature} distribution, then we can recover these fluxes. This will be valid for band passes that are narrower than potentially strong molecular bands in the spectrum, such as water or carbon monoxide, but this assumption may introduce systematic errors into very wide band-passes.
-
-We treat the planet as a ideal blackbody, which is clearly a simplification. For the planet the brightness temperature, or the temperature of a perfect blackbody emitting the same amount of flux within a bandpass, is a widely used convention, and is the direct observable.
-
-The total flux emitted by a blackbody has a trivial solution, however, \textsc{spiderman} is intended to model the observations of real instuments, which will of course only sample a very small sample of the electromagnetic spectrum. There is not an analytical expression for the total amount of flux emitted by a blackbody within an arbitrary wavelength band.
-
-An additional factor that is not currently considered by the model but will be featured in future releases of the code is to also include the ability for the user to define instrument response functions as a function of wavelength.
+There is not an analytical expression for the total amount of flux emitted by a blackbody between two arbitrary wavelengths, so \textsc{spiderman} calculates this value numerically. A grid of blackbody curves multiplied by the instrument response is pre-calculated as a function of temperature, and the flux in the chosen wavelength region is summed numerically. \textsc{spiderman} then linearly interpolates on this grid when assigning fluxes to the planet integration regions based on their temperature.
 
 \subsection{Stellar model}\label{sec:stellar model}
 
-Since the shape and depth of an eclipse and phase curve are determined by the \emph{ratio} of the fluxes between the two bodies, lightcurves can comfortably be fit by very unphysical planet and star fluxes, so long as the ratio between them is of the right order. There will clearly be an enormous degeneracy between the planet and star brightness.
+Since the shape and depth of an eclipse and phase curve are determined by the \emph{ratio} of the fluxes between the two bodies, there will clearly be an exact degeneracy between the planet and star brightness. In order to recover physical parameters of the planet, such as temperature, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system. These constraints only need to be on flux as a function of surface area, i.e., on the specific intensity of the system components, and on their radius ratio, not on their total luminosity or radii.
 
-In order to recover any useful physical parameters of the planet, it is necessary to place constraints on the \emph{absolute} scale or brightness of the system. Somewhat counter-intuitively, these constraints only need to be on flux \emph{as a function of surface area}, i.e., on the specific intensity of the system components, and on their radius ratio, not on their total luminosity or radii.
+%To see that this is indeed the case, consider a situation where the radii of both the planet and the star have both been underestimated by a factor of 2, but their surface intensities are unchanged, such that the total luminosity will have been underestimated by a factor of 4. The secondary eclipse depth and phase curve amplitude both scale as $(R_p / R_*)^2$, so are unchanged. $(R_p / R_*)^2$ is of course constrained well by the primary transit. The surface brightness distribution as a function of longitude and latitude can therefore be recovered without any constraint on the absolute radii or luminosity of the components.
 
-To see that this is indeed the case, consider a situation where the radii of both the planet and the star have both been underestimated by a factor of 2, but their surface intensities are unchanged, such that the total luminosity will have been underestimated by a factor of 4. The secondary eclipse depth and phase curve amplitude both scale as $(R_p / R_*)^2$, so are unchanged. $(R_p / R_*)^2$ is of course constrained well by the primary transit. The surface brightness distribution as a function of longitude and latitude can therefore be recovered without any constraint on the absolute radii or luminosity of the components.
+$(R_p / R_*)^2$ is well constrained from primary transits - the small variation as a function of wavelength is of little importance. There are usually good measurements of the effective temperature of the star from spectroscopy and stellar modelling. These additional parameters fix the flux scale of the system, allowing useful constraints to be placed on the absolute surface flux and brightness temperature of the planet.
 
-For the star however, we can do better than this. From high resolution spectroscopy and stellar modelling, there are often good constraints on the effective temperature and surface gravity of the star, which allow the observed stellar spectrum to be matched to a model spectra with physical units. This fixes the flux scale of the system, allowing useful constraints to be placed on the absolute flux level of the planet by extension.
-
-\textsc{spiderman} models the stellar spectrum using a grid of PHOENIX stellar atmospheres calculated by \citet{Husser2013}. Using the user provided wavelength bandpass, \textsc{spiderman} calculates the total flux in this bandpass for the available models as a function of effective temperature, it then interpolates using a simple spline fit to calculate the flux for the effective temperature of the star. Internally, this is multiplied by the stellar radius to get an absolute flux level for the system.
-
-At present \textsc{spiderman} only interpolates in temperature, and picks the closest surface gravity and metalicity in the table, which will lead to small errors in the fluxes. Future releases of the code will interpolate in these values as well, allowing an MCMC to better model the uncertainty on the stellar surface brightness.
+\textsc{spiderman} models the stellar spectrum using a grid of PHOENIX stellar atmospheres calculated by \citet{Husser2013}. Using the user provided wavelength bandpass and instrument response, \textsc{spiderman} calculates the total observed flux for the available models as a function of effective temperature, it then interpolates on this grid using a spline.
 
 \subsection{Lightcurve calculation}\label{sec:lightcurve}
 
@@ -407,7 +400,7 @@ The exponential hook shape is believed to be related to charge trapping, and is 
 
 Each \emph{visit} displays a decreasing slope, which is modelled as a second order polynomial. The cause of these features is unknown, and they have not been linked to any physical parameters of the telescope \cite{Wakeford2016}. Here, they are also likely blended with the ``Breathing" systematics of the instrument, which are caused by the changing thermal environment of the telescope during its orbit changing the focal length of the instrument. The shape of these visit long effects is slightly different between the three visits used here, so the three paramters of the polynomial are fit seperately for the three visits.
 
-The feature that is the greatest cause for concern is the visit long slope in the data, as this has a comparable timescale and amplitude to the planets phase curve, so there is potential for serious degeneracies between the systematics and the physical model.
+The feature that is the greatest cause for concern is the visit long slope in the data, as this has a comparable timescale and amplitude to the planet's phase curve, so there is potential for serious degeneracies between the systematics and the physical model.
 
 Fortunately, the phasing of the observations is such that the three visits cover very different ranges of the phase curve, which does tend to alleviate the degeneracy. As can be seen in the large corner plot in figure \ref{fig:big triangle}, these parameters are still degenerate with the physical model parameters, in particular the $\xi$ paramter which controls the phase curve shape, but the constraints placed on these parameters are still useful, and marginalising over the systematics parameters with the MCMC should remove any doubt that the results are only an artefact.
 
@@ -442,7 +435,7 @@ The best fitting model and the residuals are shown in figure \ref{fig:phase fold
 \end{center}
 \end{figure}
 
-The results of both runs are presented In table \ref{tab:results}. There is very little difference between the fitted parameters with and without limb darkening. The value of $T_n$ is lower by more than $3\sigma$ in the fit with planetary limb darkening, but the other parameters in the physical model, $\Delta T$ and $\xi$ are consistent to within $2\sigma$ between the two runs. it is particularly worth noting how apparently unaffected $\xi$ is by the presence of limb darkening, the difference being much less than $1\sigma$. This makes sense, as $\xi$ effectively parametrises the asymmetry in the flux distribution, while the limb darkening is symmetrical. This is fortunate, as $\xi$ is the most physically interesting of the model parameter, and is directly tied to the details of heat transport in the atmosphere. The insensitivity of this parameter to limb darkening is important, as it shows that it can be recovered reliably even in ignorance of the vertical temperature structure of the planets atmosphere.
+The results of both runs are presented In table \ref{tab:results}. There is very little difference between the fitted parameters with and without limb darkening. The value of $T_n$ is lower by more than $3\sigma$ in the fit with planetary limb darkening, but the other parameters in the physical model, $\Delta T$ and $\xi$ are consistent to within $2\sigma$ between the two runs. it is particularly worth noting how apparently unaffected $\xi$ is by the presence of limb darkening, the difference being much less than $1\sigma$. This makes sense, as $\xi$ effectively parametrises the asymmetry in the flux distribution, while the limb darkening is symmetrical. This is fortunate, as $\xi$ is the most physically interesting of the model parameter, and is directly tied to the details of heat transport in the atmosphere. The insensitivity of this parameter to limb darkening is important, as it shows that it can be recovered reliably even in ignorance of the vertical temperature structure of the planet's atmosphere.
 
 \begin{figure}
 \begin{center}
@@ -529,9 +522,9 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 
 In this paper we have introduced \textsc{spiderman}, an open source code for modelling phase curves and secondary eclipses with arbitrary brightness distributions. The code is modular and able to use a variety of different brightness distributions.
 
-The C based algorithm analytically calculates the area occulted of radial segments on the planets surface, and is designed to run rapidly to enable statistical techniques such as MCMCs to run quickly.
+The C based algorithm analytically calculates the area occulted of radial segments on the planet's surface, and is designed to run rapidly to enable statistical techniques such as MCMCs to run quickly.
 
-We demonstrate the use of \textsc{spiderman} by applying the code to the case of WASP-43b. We use a physically motivated analytical model presented by \citet{zhang2016} which captures the major features of exoplanet phase curves. We find that the model provides a good fit to the data, but overpredicts the nightside flux compared to non-informative models. We hypothesise that this may be due to the presence of clouds on the planets nightside.
+We demonstrate the use of \textsc{spiderman} by applying the code to the case of WASP-43b. We use a physically motivated analytical model presented by \citet{zhang2016} which captures the major features of exoplanet phase curves. We find that the model provides a good fit to the data, but overpredicts the nightside flux compared to non-informative models. We hypothesise that this may be due to the presence of clouds on the planet's nightside.
 
 As the exoplanet community prepares for a wealth of high precision phase curves and eclipses from new facilities such as TESS and JWST, we release \textsc{spiderman} as an easy to use software package that will enable robust analysis of these high precision data.
 
