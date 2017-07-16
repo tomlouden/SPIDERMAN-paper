@@ -21,45 +21,45 @@ while executing---line 1822 of file mnras.bst
 "ArXiv e-prints" is a string literal, `journal' is a missing field
 ---they aren't the same literal types for entry Majeau2012
 while executing---line 1822 of file mnras.bst
-You've used 20 entries,
+You've used 21 entries,
             2881 wiz_defined-function locations,
-            904 strings with 12043 characters,
-and the built_in function-call counts, 9382 in all, are:
-= -- 721
-> -- 748
-< -- 37
-+ -- 308
-- -- 126
-* -- 1156
-:= -- 1512
+            919 strings with 12642 characters,
+and the built_in function-call counts, 9941 in all, are:
+= -- 774
+> -- 786
+< -- 39
++ -- 320
+- -- 134
+* -- 1226
+:= -- 1600
 add.period$ -- 0
-call.type$ -- 20
-change.case$ -- 40
-chr.to.int$ -- 20
-cite$ -- 20
-duplicate$ -- 451
-empty$ -- 443
-format.name$ -- 184
-if$ -- 1606
+call.type$ -- 21
+change.case$ -- 42
+chr.to.int$ -- 21
+cite$ -- 21
+duplicate$ -- 475
+empty$ -- 466
+format.name$ -- 194
+if$ -- 1708
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 20
-newline$ -- 73
-num.names$ -- 138
-pop$ -- 91
+missing$ -- 21
+newline$ -- 76
+num.names$ -- 146
+pop$ -- 92
 preamble$ -- 1
-purify$ -- 80
+purify$ -- 84
 quote$ -- 0
-skip$ -- 272
+skip$ -- 287
 stack$ -- 0
-substring$ -- 470
-swap$ -- 227
-text.length$ -- 81
+substring$ -- 514
+swap$ -- 241
+text.length$ -- 85
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 180
+type$ -- 189
 warning$ -- 0
-while$ -- 146
+while$ -- 156
 width$ -- 0
-write$ -- 210
+write$ -- 221
 (There were 6 error messages)
