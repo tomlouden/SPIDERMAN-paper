@@ -82,7 +82,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[SPIDERMAN]{TEST SPIDERMAN: an open source code to model phase curves and secondary eclipses.}
+\title[SPIDERMAN]{SPIDERMAN: an open source code to model phase curves and secondary eclipses.}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -404,7 +404,7 @@ The feature that is the greatest cause for concern is the visit long slope in th
 
 Fortunately, the phasing of the observations is such that the three visits cover very different ranges of the phase curve, which does tend to alleviate the degeneracy. As can be seen in the large corner plot in figure \ref{fig:big triangle}, these parameters are still degenerate with the physical model parameters, in particular the $\xi$ paramter which controls the phase curve shape, but the constraints placed on these parameters are still useful, and marginalising over the systematics parameters with the MCMC should remove any doubt that the results are only an artefact.
 
-For HST systematics, where the major sources of error are fairly well understood, a parametrised systematics model of this form works well ((wakeford reff)). Alternatively, detailed instrumental models can recover the same features with fewer free parameters, however there might be concerns that if the form of the systematics changes over time then this approach might underestimate the uncertainty in the shape of the systematics and thus artificially constrain the planet models.
+For HST systematics, where the major sources of error are fairly well understood, a parametrised systematics model of this form works well \citet{Wakeford2016}. Alternatively, detailed instrumental models can recover the same features with fewer free parameters, however there might be concerns that if the form of the systematics changes over time then this approach might underestimate the uncertainty in the shape of the systematics and thus artificially constrain the planet models.
 
 An alternative, powerful technique which does not make assumptions about the form of the systematics is Gaussian Processes \citep[e.g.][]{Gibson2012a}. ((Find a more recent reference with regards to JWST, or the one comparing sytematis models on HST and spitzer))
 %Future analysis of this dataset could use a Gaussian process noise model instead of the parametrised one featured here, as used in \citet{Gibson2012a}, this could provide further confidence in the results, as the added flexibility of the GP model and the explicit fit for the timescale of the features would allow the degeneracy to be explored with fewer explicit hyper-parameters.
@@ -517,6 +517,52 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 }
 \end{table*}
 \end{center}
+
+\begin{table}{
+			\caption{The full results from the MCMC fit both with and without planetary limb darkening included.}
+			\begin{center}
+				\begin{tabular}{c c}
+					\hline
+					\hline
+					Central wavelength &   log10(xi)  \\
+					(microns) & \\
+					\hline
+1.1425 & -0.32 $\pm$ 0.27 \\
+1.1775 & -0.51 $\pm$ 0.32 \\
+1.2125 & -0.00 $\pm$ 0.18 \\
+1.2475 & -0.20 $\pm$ 0.19 \\
+1.2825 & -0.74 $\pm$ 0.39 \\
+1.3175 & -0.32 $\pm$ 0.19 \\
+1.3525 & -0.82 $\pm$ 0.62 \\
+1.3875 & -0.07 $\pm$ 0.20 \\
+1.4225 & -0.09 $\pm$ 0.34 \\
+1.4575 & -0.71 $\pm$ 0.31 \\
+1.4925 & -0.42 $\pm$ 0.17 \\
+1.5275 & -0.76 $\pm$ 0.37 \\
+1.5625 & -0.43 $\pm$ 0.14 \\
+1.5975 & -0.66 $\pm$ 0.25 \\
+1.6325 & -0.59 $\pm$ 0.19 \\
+\end{tabular}
+\end{center}
+\label{tab:results}
+}
+\end{table}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\columnwidth]{img/all_models.pdf}
+		\caption{This alright fit to Xi as a function of wavelength. blue: flat line, green: gradient function, orange: step function}
+		\label{fig:best_fit_flux}
+	\end{center}
+\end{figure}
+
+The flat model gave a value of -0.36 - note that this is a good match to the white light value. This gave an acceptable fit, with a chi2 of 15.1 (R chi2 of 1.16) with 14 DOF
+
+The best fitting gradient model had values -0.8606214   0.84938152 and gave a chi2 of 8.8 (RCHI2 0.67) with 13 DOF
+
+The best fitting model was the step function model with a dividing wavelength of 1.4225 microns, and step values of -0.5242412 -0.2149221. This gave a chi2 of 8.0 (R chi2 of 0.62) with 12 DOF.
+
+While we find that there is weak evidence for a trend with wavelength in the data, the flat line model provides a satisfactory fit to the data.
 
 \section{Conclusions}\label{sec:conclusions}
 

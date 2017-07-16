@@ -1,0 +1,4 @@
+to sync overleaf version with master: git push overleaf master
+to sync master version with overleaf: git pull overleaf master
+
+simple!
