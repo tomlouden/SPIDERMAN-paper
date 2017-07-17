@@ -159,7 +159,7 @@ In this paper we first describe the model, and provide a brief overview of the u
 
 \section{The model}\label{sec:the model}
 
-\subsection{Integrator design}\label{sec:integrator}
+\subsection{Analytical integrator}\label{sec:integrator}
 
 In order to accurately calculate both the phase curve and secondary eclipse the code must integrate over the portion of the planet that is facing the observer and is not occulted by the star at each time-step. In order to be general use and ``model agnostic'' the integrator cannot assume any specific properties or symmetries in the brightness distribution. This can be done numerically, by sampling a grid of points on the planets surface and summing those that are visible, but to achieve high precisions a large number of points would need to be sampled, which would be slow and computationally inefficient.
 
@@ -190,9 +190,7 @@ In practice, we found that dividing the planet into 5 radially (giving 25 total 
 
 Other grid schemes could be defined, for example, if it is decided that the information content is higher in some parts of the planet than others then the grid could be made finer in these regions.
 
-\subsection{Integrator validation}\label{sec:numerical}
-
-Assuming a uniform brightness distribution, the number of sections that the planet is broken into for the integration should have no impact on the final light-curve.
+We performed a simple validation check to demonstrate that the integrator is working correctlyl. assuming a uniform brightness distribution, the number of sections that the planet is broken into for the integration should have no impact on the final light-curve.
 
 To test that the integrator is performing correctly we compare the case of a single segment model, i.e., a circle, for which there is a single analytical solution to the area blocked by another circle, to one with 400 segments. In both cases the planet is assumed to have a total luminosity that is 1\% that of the star's.
 
@@ -219,6 +217,10 @@ The currently availible models range from fully non-informative to basic physica
 displayed visually in figure \ref{fig:harmonics}
 
 \subsubsection{Hotspot models}
+
+The simplest physical model that one construct.
+
+These models could also be used to represent the reflection of light due to clouds in optical phase curves. ((citations to K2 stuff, armstrong))
 
 \subsubsection{Physical model}
 
@@ -338,7 +340,7 @@ will generate a plot like figure \ref{fig:plot_system}, which is a scale diagram
 \begin{figure*}
 \begin{center}
 \includegraphics[width=\textwidth]{img/system.pdf}
-\caption{An example of the graphical output that \textsc{spiderman} can produce. This image is a scale representation of the system, with the planetary flux map included. This is useful for visualising the model. It was generated with the spiderman.plot\_system() command. The image of the star is purely aesthetic, and does not contain any model detail.}
+\caption{An example of the graphical output that \textsc{spiderman} can produce. This image is a scale representation of the system, with the planetary flux map included. This is useful for visualising the model. It was generated with the spiderman.plot\_system() command. The image of the star is purely aesthetic.}
 \label{fig:plot_system}
 \end{center}
 \end{figure*}
@@ -379,30 +381,21 @@ The systematics have effects on scales of \emph{visits}, \emph{orbits} and indiv
 
 In this study, three visits, each with 12 orbits was used to cover the full phase of WASP-43. The phasing can be seen in figure \ref{fig:systematics}, and a phase folded lightcurve can be seen in figure \ref{fig:phase folded}
 
-The systematics model we use to fit WASP-43 is the same that was used in the previous treatment \citep{Stevenson2014}.
+The systematics model we use to fit WASP-43 is the same that was used in the previous treatment \citep{Stevenson2014}. There are three components to the systematics model, the scan direction offset, ``hook effect'' and visit long slopes.
 
-In brief, there are three components to the systematics model:
-\subsection*{1.) Scan direction offset}
-
-There is an offset in the recorded flux depending on which way the the ccd was scanning during the readout, in one half of exposures the scan direction is in the same direction as the readout, and in the other half it is the offset. This leads to a very repeatable offset in the fluxes between the two scan directions, which can be captured with a single parameter \emph{scale}
-
-\subsection*{2.) Orbit long ``hook effect''}
+The scan direction offset is depends on which way the the ccd was scanning during the readout, in one half of exposures the scan direction is in the same direction as the readout, and in the other half it is the offset. This leads to a very repeatable offset in the fluxes between the two scan directions, which can be captured with a single parameter \emph{scale}
 
 Each orbit displays a characteristic exoplential ``hook'' signal, which can be modelled as
 \begin{equation} \label{eq:hook}
 F_{cor} = F*(1-exp(-r1 t_{orb}-r2-r3 \delta_{fo}))
 \end{equation}
-Where $F$ is the flux before correction and $F_{cor}$ is the corrected flux $t_{orb}$ is the time from the start of each \emph{obit}, $r1$, $r2$, $r3$ are the fitted coefficients. This exponential ramp has a different shape during the first orbit of a visit, so the $\delta_{fo}$ function takes a value of 1 if the orbit is the first, and 0 at all other times.
-
-The exponential hook shape is believed to be related to charge trapping, and is a characteristic and repeatable feature across orbits, so these parameters are fit simultaneously over visits.
-
-\subsection*{3.) Visit long slope. }
+Where $F$ is the flux before correction and $F_{cor}$ is the corrected flux $t_{orb}$ is the time from the start of each \emph{obit}, $r1$, $r2$, $r3$ are the fitted coefficients. This exponential ramp has a different shape during the first orbit of a visit, so the $\delta_{fo}$ function takes a value of 1 if the orbit is the first, and 0 at all other times. The exponential hook shape is believed to be related to charge trapping, and is a characteristic and repeatable feature across orbits, so these parameters are fit simultaneously over visits.
 
 Each \emph{visit} displays a decreasing slope, which is modelled as a second order polynomial. The cause of these features is unknown, and they have not been linked to any physical parameters of the telescope \cite{Wakeford2016}. Here, they are also likely blended with the ``Breathing" systematics of the instrument, which are caused by the changing thermal environment of the telescope during its orbit changing the focal length of the instrument. The shape of these visit long effects is slightly different between the three visits used here, so the three paramters of the polynomial are fit seperately for the three visits.
 
-The feature that is the greatest cause for concern is the visit long slope in the data, as this has a comparable timescale and amplitude to the planet's phase curve, so there is potential for serious degeneracies between the systematics and the physical model.
+The feature that is the greatest cause for concern is the visit long slope in the data, as this has a comparable timescale and amplitude to the planet's phase curve, so there is potential for degeneracies between the systematics and physical models.
 
-Fortunately, the phasing of the observations is such that the three visits cover very different ranges of the phase curve, which does tend to alleviate the degeneracy. As can be seen in the large corner plot in figure \ref{fig:big triangle}, these parameters are still degenerate with the physical model parameters, in particular the $\xi$ paramter which controls the phase curve shape, but the constraints placed on these parameters are still useful, and marginalising over the systematics parameters with the MCMC should remove any doubt that the results are only an artefact.
+Fortunately, the phasing of the observations is such that the three visits cover very different ranges of the phase curve, which serves to alleviate the degeneracy.
 
 For HST systematics, where the major sources of error are fairly well understood, a parametrised systematics model of this form works well \citet{Wakeford2016}. Alternatively, detailed instrumental models can recover the same features with fewer free parameters, however there might be concerns that if the form of the systematics changes over time then this approach might underestimate the uncertainty in the shape of the systematics and thus artificially constrain the planet models.
 
@@ -413,13 +406,13 @@ An important early result from JWST will be a characterisation of the systematic
 
 \subsection{MCMC}\label{sec:MCMC}
 
-It is important to properly access the errors on the parameter values of interest, and test for degeneracies, so we run an MCMC analysis of the model fit. We use the \textsc{emcee} affine invariant Monte Carlo implementation of \citet{Foreman-Mackey2013}.
+In order to properly access the errors on the parameter values of interest, and test for degeneracies with the systematics model, we perform an MCMC analysis. We use the \textsc{emcee} affine invariant Monte Carlo implementation of \citet{Foreman-Mackey2013}.
 
-The initial parameter positions are found with a least squares minimisation approach, and the 1000 walkers were placed in a tight Gaussian ball around these best fitting values.
+The initial parameter positions are found with a least squares minimisation approach, and the 1000 walkers were initialised around these best fitting values.
 
-Due to the uncertainties around planetary limb darkening, we choose to run a model with limb darkening disabled, and a second where the limb darkening fit for, with minimal constraints. During the MCMC fit that includes planetary limb darkening, we place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no non-physically flexible profiles.
+For the orbital and system parameters we use published values and errorbars as priors. For the Period, inclination and $a/R_*$ we use the results of \citet{Hoyer2016}, and for $a$ the value from \citet{Hellier2011a}, The eccentricity was fixed at 0, which is supported by the findings of \citet{Hoyer2016}. The stellar log g and effective temperature priors are from \citet{Gillon2012}.
 
-For the orbital and system parameters we use published values and errorbars as the priors. For the Period, inclination and $a/R_*$ we use the results of \citet{Hoyer2016}, and for $a$ the value from \citet{Hellier2011a}, The eccentricity was fixed at 0, which is well supported by the findings of \citet{Hoyer2016}. The stellar log g and effective temperature priors are from \citet{Gillon2012}.
+To test for the potential impact of \emph{planetary} limb darkening, we ran a second MCMC with this effect modelled by a simple quadratic limb darking law. We place the constraint that the limb darkening must be monotonic across the disc of the planet, i.e., there can be no change in the sign of the gradient. This results in profiles that are either flat, wholly limb darkened or wholly limb brightened, with no overly flexible profiles.
 
 For both models, the MCMC was run for 10 million steps, with the first 200,000 steps discarded as burn in.
 
@@ -440,12 +433,12 @@ The results of both runs are presented In table \ref{tab:results}. There is very
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{img/free_parameterstriangle.pdf}
-\caption{A section of the larger corner plot in figure \ref{fig:big triangle}. The parameters for the Zhang model fit are loosely correlated. The distribution for the stellar temperature, $T_s$, is set by the prior}
+\caption{A section of the corner plot focusing on the key model parameters. The parameters for the Zhang model fit are loosely correlated. The distribution for the stellar temperature, $T_s$, is set by the prior}
 \label{fig:triangle corner sub}
 \end{center}
 \end{figure}
 
-It is also interesting to check the correlation of this $\xi$ parameter with the other model parameters, this can be seen in the corner plot in figure \ref{fig:triangle corner sub}, which is a subset of the full diagram in figure \ref{fig:big triangle}. $T_s$ and $\Delta T$ are clearly correlated parameters, which is logical, as between them they determine the average temperature of the dayside, which controls the amplitude of the phase curve. Crucially, $\xi$ is not strongly degenerate with the other parameters. This indicates that the $\xi$ parameter is robust to any errors in the absolute flux level of the system, due to, for example, not modelling the instrument response curve.
+It is also interesting to check the correlation of this $\xi$ parameter with the other model parameters, this can be seen in the corner plot in figure \ref{fig:triangle corner sub}. $T_s$ and $\Delta T$ are clearly correlated parameters, which is logical, as between them they determine the average temperature of the dayside, which controls the amplitude of the phase curve. Crucially, $\xi$ is not strongly degenerate with the other parameters. This indicates that the $\xi$ parameter is robust to any errors in the absolute flux level of the system, due to, for example, not modelling the instrument response curve.
 
 The visual representation of the flux maps for the non-limb darkened case can be seen in figure \ref{fig:best_fit_flux}. The best fitting model is displayed at 4 phases, as well as the relative error on the flux distribution. The error map was generated by drawing 10,000 maps from the MCMC posterior and taking the standard deviation of the fluxes in each segment. The offset hot-spot is significant and clearly visible. The underlying temperature maps, and the errors in these, are shown in figure \ref{fig:best_fit_temp}.
 
@@ -519,7 +512,7 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 \end{center}
 
 \begin{table}{
-			\caption{The full results from the MCMC fit both with and without planetary limb darkening included.}
+			\caption{Fits to the spectrally resolved data}
 			\begin{center}
 				\begin{tabular}{c c}
 					\hline
@@ -544,7 +537,7 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 1.6325 & -0.59 $\pm$ 0.19 \\
 \end{tabular}
 \end{center}
-\label{tab:results}
+\label{tab:specresults}
 }
 \end{table}
 
@@ -606,14 +599,14 @@ As the exoplanet community prepares for a wealth of high precision phase curves 
 \end{center}
 \end{figure*}
 
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\columnwidth]{img/free_parameterstemp_map.pdf}
-\includegraphics[width=\columnwidth]{img/free_parameterstemp_errs.pdf}
-\caption{The underlying temperature distributions generated by the zhang model.}
-\label{fig:best_fit_temp}
-\end{center}
-\end{figure*}
+%\begin{figure*}
+%\begin{center}
+%\includegraphics[width=\columnwidth]{img/free_parameterstemp_map.pdf}
+%\includegraphics[width=\columnwidth]{img/free_parameterstemp_errs.pdf}
+%\caption{The underlying temperature distributions generated by the zhang model.}
+%\label{fig:best_fit_temp}
+%\end{center}
+%\end{figure*}
 
 \begin{figure*}
 \begin{center}
@@ -624,13 +617,13 @@ As the exoplanet community prepares for a wealth of high precision phase curves 
 \end{center}
 \end{figure*}
 
-\begin{figure*}
-\begin{center}
-\includegraphics[width=\textwidth]{img/huge_triangle.pdf}
-\caption{This triangle plot includes all the parameters that were used to fit the free limb darkening case.}
-\label{fig:big triangle}
-\end{center}
-\end{figure*}
+%\begin{figure*}
+%\begin{center}
+%\includegraphics[width=\textwidth]{img/huge_triangle.pdf}
+%\caption{This triangle plot includes all the parameters that were used to fit the free limb darkening case.}
+%\label{fig:big triangle}
+%\end{center}
+%\end{figure*}
 
 \section*{Acknowledgements}
 
