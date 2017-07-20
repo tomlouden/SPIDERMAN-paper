@@ -133,9 +133,9 @@ Secondary eclipses and phase curves can give direct insight into the thermal tra
 
 Hot Jupiters are expected to be tidally locked to their parent stars, resulting in a permanent day and night side with enormous differences in incident flux. The details of the heat transport in the atmosphere will effect how efficiently energy can be transported between the two hemispheres of the planet.
 
-General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}. An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots. The hotspot offset is the result of fast superotating equatorial winds in the atmosphere that arise from a coupling of planetary scale circulation and day night advection (citation).
+General Circulation Models (GCM's), are currently the state of the art for predicting the wind patters and temperature distributions of the surface of exoplanets \citep[e.g.][]{Showman2008}. An important early prediction of these GCM's was that hot, tidally locked Jupiter's would display significantly offset hotpots. The hotspot offset is the result of fast superotating equatorial winds in the atmosphere that arise from a coupling of planetary scale circulation and day night advection \citep{Showman2011}.
 
-An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be delayed from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity \citep{J.deWit2012a} (is this the right citation?). 
+An offset hotspot can be detected though the thermal phase-curve of the planet, as the point of maximum flux will be delayed from the time of secondary transit by a measurable amount. This effect can also be mimicked by a high eccentricity. \citet{J.deWit2012a} show that this is not the case for HD\,189733b using eclipse mapping.
 
 Hot Jupiters, with temperatures of order 1000 K are hot enough that they have appreciable infrared flux emission, affording contrasts with their parents stars of order 0.1\%, making direct detection with current generation instruments feasible. \citet{Deming2005} detected the infrared flux of HD\,209458b by observing the secondary transit of the planet with the MIPS instrument on \emph{Spitzer}. Using the IRAC instrument on \emph{Spitzer}, \citet{Knutson2007b} went on to measure the secondary eclipse of HD\,189733b with high precision, and also show that the system displayed a sinusoidal \emph{phase curve}, caused by the bright regions of the planet rotating into and out of view. Intriguingly, the phase of this sinusoidal curve was significantly offset from the time of secondary eclipse, validating earlier predictions from GCM's.
 
@@ -153,7 +153,7 @@ Excitingly, it is possible to invert phase curves to give information on the lon
 
 POTENTIAL OF JWST
 
-\textsc{batman} \citep{Kreidberg2015a} is a fast and accurate analytical model of exoplanet primary transits, the code is open source and publicly available. \textsc{batman} serves as the inspiration for this project, as there does not currently exist an open source code for calculating both secondary eclipses and phase curves in a self consistent way, \textsc{spiderman} is designed to fulfil this role, and it is is hoped that it will be of use to the community.
+\textsc{batman} \citep{Kreidberg2015a} is a fast analytical model of exoplanet primary transits, the code is open source. \textsc{batman}. as there does not currently exist an open source code for calculating both secondary eclipses and phase curves in a self consistent way, \textsc{spiderman} is designed to fulfil this role, and it is is hoped that it will be of use to the community.
 
 In this paper we first describe the model, and provide a brief overview of the use of the code, and then an example of use on the hot Jupiter WASP-43b.
 
