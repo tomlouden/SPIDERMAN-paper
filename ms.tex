@@ -138,7 +138,7 @@ There appear to be two broad classes of exoplanet atmosphere heat circulation. H
 
 The high velocity winds transporting this energy have been predicted to be on the order of kilometers per second, which would leave a measurable imprint on the spectral absorption lines in the planets atmosphere through Doppler shifting \citep[e.g.][]{Showman2013}, and indeed, this effect has been observed in the transit of HD\,209458b \citep{Snellen2010} and HD\,189733b \citep{Louden2015}. 
 
-As well as longitudinal mapping with phase curves, it is possible to get a two-dimensional map of the dayside of an exoplanet from the secondary eclipse, provided that there is a non-zero impact parameter \citep{Rauscher2007}. This technique works because the inclination of the system results in the occulting limb of the star scanning across the disc of the planet in both longitude and latitude during ingress and egress. The brightness distribution of the planet's permanent dayside will be imprinted on the precise shape of the ingress and egress curves. This has been demonstrated for HD\,189733 b by \citep{Majeau2012} ((and others))
+As well as longitudinal mapping with phase curves, it is possible to get a two-dimensional map of the dayside of an exoplanet from the secondary eclipse, provided that there is a non-zero impact parameter \citep{Rauscher2006}. This technique works because the inclination of the system results in the occulting limb of the star scanning across the disc of the planet in both longitude and latitude during ingress and egress. The brightness distribution of the planet's permanent dayside will be imprinted on the precise shape of the ingress and egress curves. This has been demonstrated for HD\,189733 b by \citep{Majeau2012} ((and others))
 
 When phase curves are spectrally resolved, they can provide an extremely powerful tool for accessing the vertical structure of an exoplanet atmosphere as a function of longitude. \citet{Stevenson2014} use the Wide Field Camera 3 instrument on the Hubble Space Telescope \textsc{HST}/WFC3 to measure the emission spectrum and recover the temperature-pressure profile of WASP-43b as a function of phase.
 
@@ -176,7 +176,41 @@ There are a small number of different general ``cases" for the numbers of triang
 
 Finding the collision points between an arc or a line and a circle (the star), if any exist, are trivial and fast to calculate. The code then classifies the geometric ``case" of the collision based on the number of collision points on the four boundary sides.
 
-For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles.
+For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles, a list of the major classes are given below.
+
+An individual segment is defined as having an inner and outer circle edge, and a first and second "outer" edge, which is the radial line from the center of the planet.
+
+\subsubsection{Case 1: zero collisions}
+The trivial case where the segment is either entirely blocked, or entirely unobscured. If the distance from the center of the segment to the center of the star is less than the stellar radius then the entire area is added, otherwise nothing is.
+
+\subsubsection{Case 2: Inner and outer circles crossed once}
+The case where both the inner and outer circle segments are both intersected by the disc of the star, and the straight edges are untouched. In this case the total area is calculated as follows
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 - A_4
+\end{equation}
+$A_1$ is the circle segment of the stellar disc bounded by the intersection points with the inner and outer circles. $A_2$ is the circle segment of the outer circle edge bounded by the intersection point with the stellar disc and the first straight edge. $A_3$ is the quadrilateral with the edges defined by the two intersection points and the end points of the straight edge that is within the stellar disc. $A_4$ is the circle segment of the circle segment of the inner circle edge bounded by the intersection point with the stellar disc and the straight edge. 
+
+\subsubsection{Case 3: Inner and outer circles crossed once, one straight edge crossed twice.}
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 - A_4 - A_5
+\end{equation}
+
+This is calculated the same as Case 2, but an additional area element is subtracted, $A_5$, which is the circle segment formed by the disc of the star and the two intersection points with the straight edge.
+
+\subsubsection{Case 4: inner edge crossed twice, both straight edges crossed.}
+
+this one has two subcases
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 - A_3 - A_4 - A_5 - A_6
+\end{equation}
+
+$A_1$ is the area of the triangle formed by the contact point and two corners interior to the stellar disc. $A_2$ is
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 - A_4 - A_5
+\end{equation}
 
 Numerical errors can be introduced by this approach if the brightness distribution changes significantly faster than the area elements, but the size of the elements can be adjusted as necessary by the user, at the cost of computation time.
 In practice, we found that dividing the planet into five radial segments (25 total elements) gave sufficient precision for the smoothly varying brightness profile in our WASP-43b test case, and increasing the mesh density beyond this point did not change the results. Other grid schemes could also be defined by the user. For example, if the information content is higher in some parts of the planet than others, then the grid could be made finer in these regions.
@@ -469,6 +503,7 @@ $T_s$ &         4530 & $\pm$         120 &         4530 & $\pm$         120 & K\
 
 \subsubsection{Spectrally-resolved phase curves}
 
+
 Spectrally resolving the phase offset in principle allows information on the heat transport as a function of depth. To test for this effect we break the data down into 15 spectral bins and repeat the MCMC analysis described for the white light data, without allowing the additional radial freedom from limb darkening. We fix the system parameters to those found in the white light fit. We report the measurement of $\xi$ parameter as a function of wavelength in Table \ref{tab:specresults}.
 
 \begin{table}{
@@ -504,20 +539,18 @@ Spectrally resolving the phase offset in principle allows information on the hea
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=\columnwidth]{img/all_models.pdf}
-		\caption{This alright fit to Xi as a function of wavelength. blue: flat line, green: gradient function, orange: step function}
+		\caption{The values of log($\xi$) as a function of wavelength. Several simple models are fit to the data to test for wavelength dependence. A flat line in blue, a gradient model in green and a step function in orange.}
 		\label{fig:best_fit_flux}
 	\end{center}
 \end{figure}
 
-We test for the dependence of the value of \xi
-
-The flat model gave a value of -0.36 - which is consistent with the white light value. This gave an acceptable fit, with a chi2 of 15.1 (R chi2 of 1.16) with 14 DOF
+We test if there is a significant dependence of the value of $\log(\xi)$ on the wavelength by attempting to fit several simple models to the data. The null model, which assumes there is no dependence on wavelength is simply a flat line. This model gave an acceptable fit, with a chi2 of 15.1 (R chi2 of 1.16) with 14 DOF with a best fitting value of -0.36 - which is consistent with the white light value.
 
 The best fitting gradient model had values -0.8606214   0.84938152 and gave a chi2 of 8.8 (RCHI2 0.67) with 13 DOF
 
-The best fitting model was the step function model with a dividing wavelength of 1.4225 microns, and step values of -0.5242412 -0.2149221. This gave a chi2 of 8.0 (R chi2 of 0.62) with 12 DOF.
+A function approximating a step function might be expected, since the wavelength region covers the water band;values inside the water band will probe lower pressures than those outside, due to the increased optical depth. To test for such a feature, we use a step function with three parameters: $\delta_{out}$, which is the average value outside of the step function, $\delta_{in}$ which is the value on the other side of the step, and $\gamma$, which is the wavelength which separates the two sides of the step function. The best fitting model was found to have $\gamma$ of 1.4225 microns, which is close to what would be expected for a water features, $\delta_{out}$ of -0.5242412 and $\delta_{in}$ of -0.2149221. This model gave a chi2 of 8.0 (R chi2 of 0.62) with 12 DOF. 
 
-While we find that there is weak evidence for a trend with wavelength in the data, the flat line model provides a satisfactory fit to the data.
+Using a Bayesian Information Criterion, the improvement of chi2 is marginal for the gradient model and the step function model, and not enough to constitute significant evidence in favour of either model, so we prefer the interpretation of a flat line. While we find that there is weak evidence for a trend with wavelength in the data, the flat line model provides a satisfactory fit to the data. A full treatment would require calculating the pressure contribution function for each wavelength as was done in \citet{Stevenson2014}, which is beyond the scope of this work.
 
 \section{Conclusions}\label{sec:conclusions}
 
