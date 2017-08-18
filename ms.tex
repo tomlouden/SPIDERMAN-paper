@@ -176,41 +176,39 @@ There are a small number of different general ``cases" for the numbers of triang
 
 Finding the collision points between an arc or a line and a circle (the star), if any exist, are trivial and fast to calculate. The code then classifies the geometric ``case" of the collision based on the number of collision points on the four boundary sides.
 
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\columnwidth]{img/diagram.pdf}
+		\caption{An example of the area calculation algorithm. Here the planet (light orange) passes behind the star (light blue). The occulted area of the highlighted region defined by the corners C$_1$,  C$_2$, C$_3$ and C$_4$ is calculated. The disc of the star intersects with the boundary of the region at I$_1$ and I$_2$. The overlapping area can be recovered exactly as the sum of two circle segments (blue and orange) and a triange (green}
+		\label{fig:collision}
+	\end{center}
+\end{figure}
+
 For example, if there are two collision points between the outer arc and the edge of the star, then this falls into the case where the occulted area can be described by the sum of two circular segments. Other cases include larger numbers of components, but can still be described by a small number of circle segments and triangles, a list of the major classes are given below.
 
-An individual segment is defined as having an inner and outer circle edge, and a first and second "outer" edge, which is the radial line from the center of the planet.
+An individual region is defined as having an inner and outer circle edge, and a first and second straight edge, which is the radial line from the center of the planet. Definitions are given in terms of the intersection points with the stellar disc, and the corners of the region. The two corners closest to the center of the planet are reffered to as "inner" and the other two as "outer" corners.
 
-\subsubsection{Case 1: zero collisions}
-The trivial case where the segment is either entirely blocked, or entirely unobscured. If the distance from the center of the segment to the center of the star is less than the stellar radius then the entire area is added, otherwise nothing is.
+An example of one geometric case is given below, the remaining 11 cases are listed in the Apendix.
 
-\subsubsection{Case 2: Inner and outer circles crossed once}
-The case where both the inner and outer circle segments are both intersected by the disc of the star, and the straight edges are untouched. In this case the total area is calculated as follows
-\begin{equation} \label{eq:inner_outer}
-A_{tot} = A_1 + A_2 + A_3 - A_4
-\end{equation}
-$A_1$ is the circle segment of the stellar disc bounded by the intersection points with the inner and outer circles. $A_2$ is the circle segment of the outer circle edge bounded by the intersection point with the stellar disc and the first straight edge. $A_3$ is the quadrilateral with the edges defined by the two intersection points and the end points of the straight edge that is within the stellar disc. $A_4$ is the circle segment of the circle segment of the inner circle edge bounded by the intersection point with the stellar disc and the straight edge. 
+\subsection{Case 1: Outer circle crossed once, one straight edge crossed once.}
 
-\subsubsection{Case 3: Inner and outer circles crossed once, one straight edge crossed twice.}
+This case takes two forms, either 1 corner is blocked by the star, or three are.
+
+This case for when one corner is blocked is illustrated in figure \ref{collision}, the total blocked area is recovered from the sum of three elements:
 
 \begin{equation} \label{eq:inner_outer}
-A_{tot} = A_1 + A_2 + A_3 - A_4 - A_5
+A_{tot} = A_1 + A_2 + A_3
 \end{equation}
 
-This is calculated the same as Case 2, but an additional area element is subtracted, $A_5$, which is the circle segment formed by the disc of the star and the two intersection points with the straight edge.
+$A_1$ is the circle segment of the outer circular edge of the planet beteen the intersection point and the outer corner blocked by the stellar disc. A$_2$ is the the circle segment of the stellar disc between the two intersection points. A$_3$ is the triangle formed by the two intersection points and the corner blocked by the disc. In figure \ref{collision}, areas A$_1$, A$_2$ and A$_3$ are colloured in orange, blue and green, respectively.
 
-\subsubsection{Case 4: inner edge crossed twice, both straight edges crossed.}
-
-this one has two subcases
+If instead the case is flipped such that 3 corners are blocked:
 
 \begin{equation} \label{eq:inner_outer}
-A_{tot} = A_1 + A_2 - A_3 - A_4 - A_5 - A_6
+A_{tot} = A_R - (A_1 + A_2 - A_3)
 \end{equation}
 
-$A_1$ is the area of the triangle formed by the contact point and two corners interior to the stellar disc. $A_2$ is
-
-\begin{equation} \label{eq:inner_outer}
-A_{tot} = A_1 + A_2 + A_3 - A_4 - A_5
-\end{equation}
+$A_R$ is the total area of the region. $A_1$ is the segment of the outer circle edge defined by the corner that is outside of the stellar disc and the intersection point. $A_2$ is the triangle defined by the two intersection points and the corner that is not blocked by the disc. $A_3$ is the circle segment defined by the stellar disc and the two intersection points.
 
 Numerical errors can be introduced by this approach if the brightness distribution changes significantly faster than the area elements, but the size of the elements can be adjusted as necessary by the user, at the cost of computation time.
 In practice, we found that dividing the planet into five radial segments (25 total elements) gave sufficient precision for the smoothly varying brightness profile in our WASP-43b test case, and increasing the mesh density beyond this point did not change the results. Other grid schemes could also be defined by the user. For example, if the information content is higher in some parts of the planet than others, then the grid could be made finer in these regions.
@@ -649,9 +647,115 @@ T.L. is supported by STFC consolidated grant (ST/L000733/1). Much of this work w
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 
-%\appendix
+\appendix
 
-%\section{Some extra material}
+\section{All colision cases}
+
+\subsection*{Case 2: zero collisions}
+The trivial case where the segment is either entirely blocked, or entirely unobscured. If the distance from the center of the segment to the center of the star is less than the stellar radius then the entire area is added, otherwise nothing is.
+
+\subsection*{Case 3: Inner and outer circles crossed once}
+The case where both the inner and outer circle segments are both intersected by the disc of the star, and the straight edges are untouched. In this case the total area is calculated as follows
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 - A_4
+\end{equation}
+$A_1$ is the circle segment of the stellar disc bounded by the intersection points with the inner and outer circles. $A_2$ is the circle segment of the outer circle edge bounded by the intersection point with the stellar disc and the outer corner that is blocked by the stellar disc. $A_3$ is the quadrilateral defined by the two intersection points and the two corners blocked by the stellar disc. $A_4$ is the circle segment of the inner circle edge bounded by the intersection point with the stellar disc and the inner corner that is blocked by the star. 
+
+\subsection*{Case 4: Inner and outer circles crossed once, one straight edge crossed twice.}
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 - A_4 - A_5
+\end{equation}
+
+This is calculated the same as Case 2, but an additional area element is subtracted, $A_5$, which is the circle segment formed by the disc of the star and the two intersection points with the straight edge.
+
+\subsection*{Case 5: inner edge crossed twice, both straight edges crossed.}
+
+this one has two subcases; if the inner edges are covered by the star, then:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_R - (A_1 + A_2 + A_3 - A_4 - A_5)
+\end{equation}
+
+$A_R$ is the total area of the region.
+
+otherwise, if the inner edges are outside the disc of the star:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_R - (A_1 + A_2 - A_3 - A_4 - A_5 - A_6)
+\end{equation}
+
+$A_R$ is the total area of the region. $A_1$ is the area of the triangle formed by the two corners on one straight edge, and the contact point with the inner edge that is closest to them, $A_2$ is the same for the other side. A$_3$ and A$_4$ are the circle segments of the inner edge, each formed by an inner corner and the intersection of the inner edge that is closest to them. A$_5$ and A$_6$ are the circle segments of the stellar disc, each formed by an intersection of a straight edge and the intersection of the inner edge that is closest to them.
+
+\subsection*{Case 6: A straight edge crossed twice}
+
+In this case, only a single area needs to be calculated, the area of a circle segment defined by the stellar disc, and the two intersection points
+
+\subsection*{Case 7: Inner edge and one straight edge}
+
+Similar to Case 2, this case has two subcases, one where there are three blocked corners, and one where one corner is blocked. For the case with one corner inside:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 - A_3
+\end{equation}
+
+$A_1$ is the triangle defined by the corner that is blocked by the disc and the two intersection points. $A_2$ is the circle segment of the star disc defined by the two intersection points. $A_3$ is the segment area of the inner edge defined by the intersection point and the corner that is blocked by the stellar disc.
+
+For the case with three corners inside:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_R - (A_1 - A_2 - A_3)
+\end{equation}
+
+$A_R$ is the total area of the region. $A_1$ is the segment of the inner edge defined by the intersection point and the corner not blocked by the star. $A_2$ is the segment of the star defined by the intersection and the corner not blocked by the star. $A_3$ is the triangle defined by the corner not blocked by the star and the two intersection points.
+
+\subsection*{Case 8: Outer edge crossed twice}
+
+If no corners are covered by the star, then this is simply the sum of two circle segments, for the outer edge and the star, defined by the two interestion points.
+
+If all corners are covered by the star, then:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_R - (A_1 - A_2)
+\end{equation}
+
+Where $A_1$ is the segment of the outer edge defined by the two interestion points, and $A_2$ is the segment of the stellar disc defined by the two interestion points. 
+
+\subsection*{Case 9: Both edges crossed}
+
+This is divided further into two subcases, if the two outer corners are covered by the star, then:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3
+\end{equation}
+
+$A_1$ is the quadrilateral defined by the intersection points and the outer corners. $A_2$ is the circle segment defined by the stellar disc and the intersection points. $A_3$ is the circle segment defined by the outer edge and the outer corners.
+
+Otherwise, if the two inner corners are covered:
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 - A_3
+\end{equation}
+
+$A_1$ is the quadrilateral defined by the intersection points and the inner edges. $A_2$ is the circle segment defined by the stellar disc and the intersection points. $A_3$ is the circle segment defined by the inner edge and the inner corners.
+
+\subsection*{Case 10: 2 inner, one outer, one edge}
+
+
+
+\subsection*{Case 11: 2 inner, two outer}
+
+This case only occurs when the star is smaller than the planet.
+
+\begin{equation} \label{eq:inner_outer}
+A_{tot} = A_1 + A_2 + A_3 + A_4 - A_5
+\end{equation}
+
+$A_1$ is the quadrilateral formed by the 4 intersection points. $A_2$ and $A_3$ are the circle segments of the stellar disc defined by the two pairs of inner and outer intersection points. $A_4$ is the circle segment of the outer edge formed by the two intersection points on the outer edge. $A_5$ is the circle segment of the outer edge formed by the two intersection points on the inner edge.
+
+\subsection*{Case 12: tangent solutions}
+
+The remaining posible cases are all tangent solutions, where the disc of the star touches the boundary of the region exactly once, and no area is blocked.	
 
 %If you want to present additional material which would interrupt the flow of %the main paper,
 %it can be placed in an Appendix which appears after the list of references.
